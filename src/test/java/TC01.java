@@ -18,7 +18,7 @@ public class TC01 {
 
         loginPage.Login(Constains.USERNAME, Constains.PASSWORD);
         homePage.openTransferForm();
-        homePage.selectSourceAccount(100001403);
+        homePage.enterTranferDetails(100001403,100001399, 12000,"Huong chuyen khoan 12000 dong");
         softAssert.assertAll();
     }
 

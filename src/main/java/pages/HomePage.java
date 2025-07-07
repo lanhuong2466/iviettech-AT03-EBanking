@@ -30,4 +30,28 @@ public class HomePage {
         webDriver.findElement(By.xpath("//li[text() = '" + accountNumber + "']")).click();
     }
 
+    public void enterDestinationAccount(int destinationAccount) {
+        webDriver.findElement(destinationAccountTextboxLocator).sendKeys(String.valueOf(destinationAccount));
+    }
+
+    public void enterAmount(int amount) {
+        webDriver.findElement(amountTextboxLocator).sendKeys(String.valueOf(amount));
+    }
+
+    public void enterPaymentContent(String content) {
+        webDriver.findElement(paymentContentTextboxLocator).sendKeys(content);
+    }
+
+    public void openTransactionConfirmationForm() {
+        webDriver.findElement(confirmButtonLocator).click();
+    }
+
+    public void enterTranferDetails(int sourceAccount, int destinationAccount, int amount, String content) {
+        selectSourceAccount(sourceAccount);
+        enterDestinationAccount(destinationAccount);
+        enterAmount(amount);
+        enterPaymentContent(content);
+        openTransactionConfirmationForm();
+    }
+
 }
