@@ -27,6 +27,7 @@ public class HomePage {
 
     public void selectSourceAccount(int accountNumber) {
         webDriver.findElement(sourceAccountComboboxLocator).click();
+        webDriver.findElement(By.xpath("//li[text() = '" + accountNumber + "']")).click();
     }
 
 }

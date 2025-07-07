@@ -1,3 +1,4 @@
+import pages.HomePage;
 import pages.LoginPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -16,6 +17,8 @@ public class TC01 {
     public void VerifySuccessfulFundTransferBetweenTwoAccountsWithinTheSameBank() {
 
         loginPage.Login(Constains.USERNAME, Constains.PASSWORD);
+        homePage.openTransferForm();
+        homePage.selectSourceAccount(100001403);
         softAssert.assertAll();
     }
 
@@ -28,6 +31,7 @@ public class TC01 {
         webDriver.manage().window().maximize();
         softAssert = new SoftAssert();
         loginPage = new LoginPage(webDriver);
+        homePage = new HomePage(webDriver);
         webDriver.get(Constains.EBANKING_URL);
 
     }
@@ -40,6 +44,7 @@ public class TC01 {
     WebDriver webDriver;
     SoftAssert softAssert;
     LoginPage loginPage;
+    HomePage homePage;
 
 
 }
