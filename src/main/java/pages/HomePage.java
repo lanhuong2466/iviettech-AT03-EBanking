@@ -54,4 +54,9 @@ public class HomePage {
         openTransactionConfirmationForm();
     }
 
+    public void openOTPEntryForm() {
+        webDriver.findElement(confirmButtonLocator).click();
+    }
+
+
 }
