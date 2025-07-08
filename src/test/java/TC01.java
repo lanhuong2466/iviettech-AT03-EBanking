@@ -10,6 +10,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import utils.Constains;
+import utils.WindowSwitcher;
 
 import java.sql.Array;
 import java.time.Duration;
@@ -18,22 +19,44 @@ import java.util.ArrayList;
 public class TC01 {
 
     @Test
-    public void VerifySuccessfulFundTransferBetweenTwoAccountsWithinTheSameBank() {
+    public void VerifySuccessfulFundTransferBetweenTwoAccountsWithinTheSameBank() throws InterruptedException {
 
         loginPage.Login(Constains.USERNAME, Constains.PASSWORD);
 
-//        String currHandle= webDriver.getWindowHandle();
-
-
         homePage.openTransferForm();
         homePage.enterTranferDetails(100001403,100001399, 12000,"Huong chuyen khoan 12000 dong");
-        homePage.openTransferForm();
+        homePage.openOTPEntryForm();
+
+        Thread.sleep(3000);
+
+        String originalWindow = webDriver.getWindowHandle();
 
         webDriver.switchTo().newWindow(org.openqa.selenium.WindowType.TAB);
+
+
+        webDriver.switchTo().newWindow(org.openqa.selenium.WindowType.TAB);
+        WindowSwitcher.switchToNewWindow(webDriver, originalWindow);
+
         webDriver.get(Constains.YOPMAIL_URL);
+
+
         String yopMailWindow = new ArrayList<>(webDriver.getWindowHandles()).get(1);
         webDriver.switchTo().window(yopMailWindow);
         homeYopMailPage.loginToYopMail(Constains.EMAIL);
+
+        emailPage.clickRefreshButton();
+
+        emailPage.openFirstMail();
+        emailPage.getOTPCode();
+        String OTPCode = emailPage.getOTPCode();
+
+        webDriver.close();
+        webDriver.switchTo().window(originalWindow);
+
+        homePage.enterOTPCode(OTPCode);
+
+        homePage.clickTransferButton();
+
 
         softAssert.assertAll();
     }
@@ -66,6 +89,10 @@ public class TC01 {
     HomeYopMailPage homeYopMailPage;
     EmailPage emailPage;
 
-
+// pages chia lam 2: ebanking va yopmail,
+    // leftmmenu taoj thanhf 1 page rieng biet
+    //khong dung if-else trong tcs
+    // thread.sleep() khong nen dung trong test case, chi dung trong test case nao can thiet
+    //@step, allure step
 }
 

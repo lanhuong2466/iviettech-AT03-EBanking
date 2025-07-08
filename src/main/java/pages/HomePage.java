@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 
 public class HomePage {
     private WebDriver webDriver;
+    //leftmenu
     final private By tranferLinkLocator = By.xpath("//*[@class = 'ui-menuitem-text'][text() = 'Chuyển  khoản']");
     final private By interbankTransferLinkLocator = By.xpath("//*[@class = 'ui-menuitem-text'][text() = 'Liên Ngân Hàng']");
     final private By sourceAccountComboboxLocator = By.id("j_idt23:j_idt28_label");
@@ -12,9 +13,21 @@ public class HomePage {
     final private By amountTextboxLocator = By.id("j_idt23:j_idt40");
     final private By paymentContentTextboxLocator = By.id("j_idt23:j_idt42");
     final private By confirmButtonLocator = By.name("j_idt23:j_idt44");
+    final private By OTPTextboxLocator = By.name("j_idt23:j_idt46");
+    final private By TranferButtonLocator = By.name("j_idt23:j_idt48");
 
     public HomePage(WebDriver webDriver) {
         this.webDriver = webDriver;
+    }
+
+    public void clickTransferButton() {
+        webDriver.navigate().refresh();
+        webDriver.findElement(TranferButtonLocator).click();
+    }
+
+    public void enterOTPCode(String otp) {
+        webDriver.navigate().refresh();
+        webDriver.findElement(OTPTextboxLocator).sendKeys(otp);
     }
 
     public void openTransferForm() {
