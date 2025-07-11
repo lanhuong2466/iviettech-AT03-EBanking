@@ -17,10 +17,34 @@ public class HomePage {
     final private By OTPTextboxLocator = By.name("j_idt23:j_idt46");
     final private By TranferButtonLocator = By.name("j_idt23:j_idt48");
     final private By availableBalanceLocator = By.id("j_idt23:amount");
-    final private By popupTransferSuccessLocator = By.xpath("//*[@id = 'primefacesmessagedlg']//div[text() = 'Chuyển tiền thành công']");
+    final private By popupTransferSuccessLocator = By.xpath(
+            "//*[@id = 'primefacesmessagedlg']//div[text() = 'Chuyển tiền thành công']");
+    final private By popupSelectAnAccountLocator = By.xpath(
+            "//span[@class = 'ui-growl-title'][text() = 'Mời chọn tài khoản']");
+    final private By popupInvalidAccountLocator = By.xpath(
+            "//span[@class = 'ui-growl-title'][text() = 'Tài khoản không hợp lệ, quý khách vui lòng kiểm tra lại.']");
 
-    public HomePage(WebDriver webDriver) {
-        this.webDriver = webDriver;
+
+    @Step("Verify the popup for invalid account is displayed")
+    public boolean isPopupInvalidAccountDisplayed() {
+        WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(5));
+        try {
+            wait.until(driver -> driver.findElement(popupInvalidAccountLocator).isDisplayed());
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Step("Verify the popup to select an account is displayed")
+    public boolean isPopupSelectAnAccountDisplayed() {
+        WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(5));
+        try {
+            wait.until(driver -> driver.findElement(popupSelectAnAccountLocator).isDisplayed());
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Step("Get available balance")
@@ -90,11 +114,9 @@ public class HomePage {
             return false;
         }
     }
-
-
-
-
-
+    public HomePage(WebDriver webDriver) {
+        this.webDriver = webDriver;
+    }
 
 }
 
