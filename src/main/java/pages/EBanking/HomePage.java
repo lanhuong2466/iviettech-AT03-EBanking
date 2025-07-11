@@ -1,13 +1,14 @@
-package pages;
+package pages.EBanking;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class HomePage {
     private WebDriver webDriver;
-    //leftmenu
-    final private By tranferLinkLocator = By.xpath("//*[@class = 'ui-menuitem-text'][text() = 'Chuyển  khoản']");
-    final private By interbankTransferLinkLocator = By.xpath("//*[@class = 'ui-menuitem-text'][text() = 'Liên Ngân Hàng']");
     final private By sourceAccountComboboxLocator = By.id("j_idt23:j_idt28_label");
     final private By destinationAccountTextboxLocator = By.id("j_idt23:j_idt35");
     final private By amountTextboxLocator = By.id("j_idt23:j_idt40");
@@ -15,61 +16,85 @@ public class HomePage {
     final private By confirmButtonLocator = By.name("j_idt23:j_idt44");
     final private By OTPTextboxLocator = By.name("j_idt23:j_idt46");
     final private By TranferButtonLocator = By.name("j_idt23:j_idt48");
+    final private By availableBalanceLocator = By.id("j_idt23:amount");
+    final private By popupTransferSuccessLocator = By.xpath("//*[@id = 'primefacesmessagedlg']//div[text() = 'Chuyển tiền thành công']");
 
     public HomePage(WebDriver webDriver) {
         this.webDriver = webDriver;
     }
 
+    @Step("Get available balance")
+    public int getAvailableBalance() {
+        int balance = Integer.parseInt(webDriver.findElement(availableBalanceLocator).getText().replace(" VNĐ", "").replace(",",""));
+        return balance;
+    }
+
+    @Step("Click transfer button")
     public void clickTransferButton() {
         webDriver.navigate().refresh();
         webDriver.findElement(TranferButtonLocator).click();
     }
 
+    @Step("Enter OTP code")
     public void enterOTPCode(String otp) {
         webDriver.navigate().refresh();
         webDriver.findElement(OTPTextboxLocator).sendKeys(otp);
     }
 
-    public void openTransferForm() {
-        webDriver.findElement(tranferLinkLocator).click();
-    }
-
-    public void openInterbankTransferForm() {
-        webDriver.findElement(interbankTransferLinkLocator).click();
-    }
-
-    public void selectSourceAccount(int accountNumber) {
+    @Step("Select source account")
+    public void selectSourceAccount(int accountId) {
         webDriver.findElement(sourceAccountComboboxLocator).click();
-        webDriver.findElement(By.xpath("//li[text() = '" + accountNumber + "']")).click();
+        webDriver.findElement(By.xpath("//li[text() = '" + String.valueOf(accountId) + "']")).click();
     }
 
+    @Step("Enter destination account")
     public void enterDestinationAccount(int destinationAccount) {
         webDriver.findElement(destinationAccountTextboxLocator).sendKeys(String.valueOf(destinationAccount));
     }
 
+    @Step("Enter amount")
     public void enterAmount(int amount) {
         webDriver.findElement(amountTextboxLocator).sendKeys(String.valueOf(amount));
     }
 
+    @Step("Enter payment content")
     public void enterPaymentContent(String content) {
         webDriver.findElement(paymentContentTextboxLocator).sendKeys(content);
     }
 
+    @Step("Click on Confirm button to open transaction confirm form")
     public void openTransactionConfirmationForm() {
         webDriver.findElement(confirmButtonLocator).click();
     }
 
+    @Step("Enter transfer details")
     public void enterTranferDetails(int sourceAccount, int destinationAccount, int amount, String content) {
         selectSourceAccount(sourceAccount);
         enterDestinationAccount(destinationAccount);
         enterAmount(amount);
         enterPaymentContent(content);
-        openTransactionConfirmationForm();
     }
 
+    @Step("Click on confirm button to open OTP entry form")
     public void openOTPEntryForm() {
         webDriver.findElement(confirmButtonLocator).click();
     }
 
+    @Step("Verify transfer success popup is displayed")
+    public boolean isTransferSuccessPopupDisplayed() {
+        WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(5));
+        try {
+            wait.until(driver -> driver.findElement(popupTransferSuccessLocator).isDisplayed());
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+
+
+
+
 
 }
+

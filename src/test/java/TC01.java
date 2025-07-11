@@ -1,7 +1,3 @@
-import pages.EmailPage;
-import pages.HomePage;
-import pages.HomeYopMailPage;
-import pages.LoginPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -9,10 +5,15 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
-import utils.Constains;
+import pages.EBanking.AccountDetails;
+import pages.EBanking.HomePage;
+import pages.EBanking.LeftMenu;
+import pages.EBanking.LoginPage;
+import pages.Yopmail.EmailPage;
+import pages.Yopmail.HomeYopMailPage;
+import utils.Constants;
 import utils.WindowSwitcher;
 
-import java.sql.Array;
 import java.time.Duration;
 import java.util.ArrayList;
 
@@ -21,32 +22,46 @@ public class TC01 {
     @Test
     public void VerifySuccessfulFundTransferBetweenTwoAccountsWithinTheSameBank() throws InterruptedException {
 
-        loginPage.Login(Constains.USERNAME, Constains.PASSWORD);
+        loginPage.Login(Constants.USERNAME, Constants.PASSWORD);
 
-        homePage.openTransferForm();
+        leftMenu.openTransferForm();
+
         homePage.enterTranferDetails(100001403,100001399, 12000,"Huong chuyen khoan 12000 dong");
-        homePage.openOTPEntryForm();
-
-        Thread.sleep(3000);
 
         String originalWindow = webDriver.getWindowHandle();
+//        webDriver.switchTo().newWindow(org.openqa.selenium.WindowType.TAB);
+//        WindowSwitcher.switchToNewWindow(webDriver, originalWindow);
+//
+//        webDriver.get(Constants.EBANKING_URL);
+//
+//        leftMenu.openAccountDetailForm();
+//        accountDetails.openAccountDetails(100001403);
+//
+//        int availableBalance = accountDetails.getAvailableBalance();
+//
+//        webDriver.close();
+//        webDriver.switchTo().window(originalWindow);
+//
+//        softAssert.assertEquals(homePage.getAvailableBalance(),
+//                availableBalance, "So du kha dung khong dung");
 
-        webDriver.switchTo().newWindow(org.openqa.selenium.WindowType.TAB);
+        homePage.openTransactionConfirmationForm();
 
+        homePage.openOTPEntryForm();
 
         webDriver.switchTo().newWindow(org.openqa.selenium.WindowType.TAB);
         WindowSwitcher.switchToNewWindow(webDriver, originalWindow);
 
-        webDriver.get(Constains.YOPMAIL_URL);
+        webDriver.get(Constants.YOPMAIL_URL);
 
-
-        String yopMailWindow = new ArrayList<>(webDriver.getWindowHandles()).get(1);
-        webDriver.switchTo().window(yopMailWindow);
-        homeYopMailPage.loginToYopMail(Constains.EMAIL);
+//        String yopMailWindow = new ArrayList<>(webDriver.getWindowHandles()).get(1);
+//        webDriver.switchTo().window(yopMailWindow);
+        homeYopMailPage.loginToYopMail(Constants.EMAIL);
 
         emailPage.clickRefreshButton();
 
         emailPage.openFirstMail();
+
         emailPage.getOTPCode();
         String OTPCode = emailPage.getOTPCode();
 
@@ -56,6 +71,7 @@ public class TC01 {
         homePage.enterOTPCode(OTPCode);
 
         homePage.clickTransferButton();
+//        softAssert.assertTrue(homePage.isTransferSuccessPopupDisplayed(), "Khong hien popup chuyen khoan thanh cong");
 
 
         softAssert.assertAll();
@@ -73,7 +89,9 @@ public class TC01 {
         homePage = new HomePage(webDriver);
         homeYopMailPage = new HomeYopMailPage(webDriver);
         emailPage = new EmailPage(webDriver);
-        webDriver.get(Constains.EBANKING_URL);
+        leftMenu = new LeftMenu(webDriver);
+        accountDetails = new AccountDetails(webDriver);
+        webDriver.get(Constants.EBANKING_URL);
 
     }
 
@@ -88,6 +106,8 @@ public class TC01 {
     HomePage homePage;
     HomeYopMailPage homeYopMailPage;
     EmailPage emailPage;
+    LeftMenu leftMenu;
+    AccountDetails accountDetails;
 
 // pages chia lam 2: ebanking va yopmail,
     // leftmmenu taoj thanhf 1 page rieng biet
