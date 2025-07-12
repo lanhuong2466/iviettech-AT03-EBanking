@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class TC01 {
 
     @Test
-    public void VerifySuccessfulFundTransferBetweenTwoAccountsWithinTheSameBank() throws InterruptedException {
+    public void VerifySuccessfulFundTransferBetweenTwoAccountsWithinTheSameBank() {
 
         loginPage.Login(Constants.USERNAME, Constants.PASSWORD);
 
@@ -30,7 +30,9 @@ public class TC01 {
 
         leftMenu.openTransferForm();
 
-        homePage.enterTranferDetails(100001403,100001399, 12000,"Huong chuyen khoan 12000 dong");
+        homePage.enterTranferDetails(100001403,
+                100001399, 12000,
+                "Huong chuyen khoan 12000 dong");
 
         softAssert.assertEquals(homePage.getAvailableBalance(),
                 beforeAvailableBalance,
@@ -50,14 +52,9 @@ public class TC01 {
 
         emailPage.clickRefreshButton();
 
-        Thread.sleep(1000);
-
         emailPage.openFirstMail();
-        Thread.sleep(1000);
 
         String OTPCode = emailPage.getOTPCode();
-
-        Thread.sleep(1000);
 
         webDriver.close();
         webDriver.switchTo().window(originalWindow);
