@@ -30,6 +30,7 @@ public class EmailPage {
 
     public void openFirstMail() {
         //switch to the iframe that contains the email list
+
         webDriver.switchTo().frame(webDriver.findElement(listEmailLocator));
         List<WebElement> emails = webDriver.findElements(firstMailLocator);
         if (!emails.isEmpty()) {

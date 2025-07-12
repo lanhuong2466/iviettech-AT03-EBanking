@@ -3,6 +3,7 @@ package pages.EBanking;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
@@ -32,12 +33,8 @@ public class HomePage {
     @Step("Verify the popup for insufficient funds is displayed")
     public boolean isPopupInsufficientFundsDisplayed() {
         WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(5));
-        try {
-            wait.until(driver -> driver.findElement(popupInsufficientFundsLocator).isDisplayed());
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+        wait.until(ExpectedConditions.visibilityOfElementLocated(popupInsufficientFundsLocator));
+        return true;
     }
 
     @Step("Get text from negative amount popup")
@@ -48,39 +45,29 @@ public class HomePage {
     @Step("Verify the popup for negative amount is displayed")
     public boolean isPopupNegativeAmountDisplayed() {
         WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(5));
-        try {
-            wait.until(driver -> driver.findElement(popupNegativeAmountLocator).isDisplayed());
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+        wait.until(ExpectedConditions.visibilityOfElementLocated(popupNegativeAmountLocator));
+        return true;
+
     }
 
     @Step("Verify the popup for invalid account is displayed")
     public boolean isPopupInvalidAccountDisplayed() {
         WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(5));
-        try {
-            wait.until(driver -> driver.findElement(popupInvalidAccountLocator).isDisplayed());
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+        wait.until(ExpectedConditions.visibilityOfElementLocated(popupInvalidAccountLocator));
+        return true;
+
     }
 
     @Step("Verify the popup to select an account is displayed")
     public boolean isPopupSelectAnAccountDisplayed() {
         WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(5));
-        try {
-            wait.until(driver -> driver.findElement(popupSelectAnAccountLocator).isDisplayed());
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+        wait.until(ExpectedConditions.visibilityOfElementLocated(popupSelectAnAccountLocator));
+        return true;
     }
 
     @Step("Get available balance")
     public int getAvailableBalance() {
-        int balance = Integer.parseInt(webDriver.findElement(availableBalanceLocator).getText().replace(" VNĐ", "").replace(",",""));
+        int balance = Integer.parseInt(webDriver.findElement(availableBalanceLocator).getText().replace(" VNĐ", "").replace(",", ""));
         return balance;
     }
 
@@ -88,6 +75,8 @@ public class HomePage {
     public void clickTransferButton() {
         webDriver.navigate().refresh();
         webDriver.findElement(TranferButtonLocator).click();
+        WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(popupTransferSuccessLocator));
     }
 
     @Step("Enter OTP code")
@@ -145,6 +134,7 @@ public class HomePage {
             return false;
         }
     }
+
     public HomePage(WebDriver webDriver) {
         this.webDriver = webDriver;
     }

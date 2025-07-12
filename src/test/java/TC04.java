@@ -22,6 +22,10 @@ public class TC04 {
     public void VerifyErrorPopupIsDisplayedWhenTheDestinationAccountIsInvalidOrNotEntered() {
         loginPage.Login(Constants.USERNAME, Constants.PASSWORD);
 
+        leftMenu.openAccountDetailForm();
+        accountDetails.openAccountDetails(100001403);
+        int beforeAvailableBalance = accountDetails.getAvailableBalance();
+
         leftMenu.openTransferForm();
 
         homePage.enterTranferDetails(100001403,
@@ -33,18 +37,41 @@ public class TC04 {
 
         softAssert.assertTrue(homePage.isPopupInvalidAccountDisplayed(), "Popup Tài khoản không hợp lệ, quý khách vui lòng kiểm tra lại không hiển thị");
 
-        webDriver.switchTo().newWindow(WindowType.TAB);
-        WindowSwitcher.switchToNewWindow(webDriver, webDriver.getWindowHandle());
-        webDriver.get(Constants.EBANKING_URL);
+        leftMenu.openAccountDetailForm();
+        accountDetails.openAccountDetails(100001403);
+        int afterAvailableBalance = accountDetails.getAvailableBalance();
 
+        softAssert.assertEquals(beforeAvailableBalance,
+                afterAvailableBalance,
+                "Số dư khả dụng không đúng sau khi chuyển tiền đến tài khoản không hợp lệ");
+
+        softAssert.assertAll();
+    }
+
+    @Test
+    public void VerifyErrorPopupIsDisplayedWhenTheDestinationAccountIsNotEntered() {
+        loginPage.Login(Constants.USERNAME, Constants.PASSWORD);
+
+        leftMenu.openAccountDetailForm();
+        accountDetails.openAccountDetails(100001403);
+        int beforeAvailableBalance = accountDetails.getAvailableBalance();
+        
         leftMenu.openTransferForm();
-
         homePage.selectSourceAccount(100001403);
         homePage.enterAmount(12000);
         homePage.enterPaymentContent("Huong chuyen khoan 12000 dong");
         homePage.openTransactionConfirmationForm();
 
         softAssert.assertTrue(homePage.isPopupInvalidAccountDisplayed(), "Popup Tài khoản không hợp lệ, quý khách vui lòng kiểm tra lại không hiển thị");
+
+        leftMenu.openAccountDetailForm();
+        accountDetails.openAccountDetails(100001403);
+        int afterAvailableBalance = accountDetails.getAvailableBalance();
+
+        softAssert.assertEquals(beforeAvailableBalance,
+                afterAvailableBalance,
+                "Số dư khả dụng không đúng sau khi chuyển tiền đến tài khoản không hợp lệ");
+
         softAssert.assertAll();
     }
 

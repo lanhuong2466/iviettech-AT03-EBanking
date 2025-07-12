@@ -21,6 +21,10 @@ public class TC05 {
     public void VerifyErrorMessageIsDisplayedWhenTransferringANegativeAmount() {
         loginPage.Login(Constants.USERNAME, Constants.PASSWORD);
 
+        leftMenu.openAccountDetailForm();
+        accountDetails.openAccountDetails(100001403);
+        int beforeAvailableBalance = accountDetails.getAvailableBalance();
+
         leftMenu.openTransferForm();
 
         homePage.enterTranferDetails(100001403,
@@ -32,6 +36,14 @@ public class TC05 {
 
         softAssert.assertTrue(homePage.isPopupNegativeAmountDisplayed(), "Popup thông báo số tiền chuyển khoản không hợp lệ không hiển thị");
         softAssert.assertEquals(homePage.getpopupNegativeAmountText(), "Negative amount is not allowed for transfer.", "Nội dung thông báo không đúng");
+
+        leftMenu.openAccountDetailForm();
+        accountDetails.openAccountDetails(100001403);
+        int afterAvailableBalance = accountDetails.getAvailableBalance();
+
+        softAssert.assertEquals(beforeAvailableBalance,
+                afterAvailableBalance,
+                "Số dư khả dụng không đúng sau khi chuyển số tiền âm");
 
         softAssert.assertAll();
     }

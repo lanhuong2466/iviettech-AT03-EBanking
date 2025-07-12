@@ -24,46 +24,40 @@ public class TC01 {
 
         loginPage.Login(Constants.USERNAME, Constants.PASSWORD);
 
+        leftMenu.openAccountDetailForm();
+        accountDetails.openAccountDetails(100001403);
+        int beforeAvailableBalance = accountDetails.getAvailableBalance();
+
         leftMenu.openTransferForm();
 
         homePage.enterTranferDetails(100001403,100001399, 12000,"Huong chuyen khoan 12000 dong");
 
-        String originalWindow = webDriver.getWindowHandle();
-//        webDriver.switchTo().newWindow(org.openqa.selenium.WindowType.TAB);
-//        WindowSwitcher.switchToNewWindow(webDriver, originalWindow);
-//
-//        webDriver.get(Constants.EBANKING_URL);
-//
-//        leftMenu.openAccountDetailForm();
-//        accountDetails.openAccountDetails(100001403);
-//
-//        int availableBalance = accountDetails.getAvailableBalance();
-//
-//        webDriver.close();
-//        webDriver.switchTo().window(originalWindow);
-//
-//        softAssert.assertEquals(homePage.getAvailableBalance(),
-//                availableBalance, "So du kha dung khong dung");
+        softAssert.assertEquals(homePage.getAvailableBalance(),
+                beforeAvailableBalance,
+                "So du kha dung khong dung");
 
         homePage.openTransactionConfirmationForm();
 
         homePage.openOTPEntryForm();
 
+        String originalWindow = webDriver.getWindowHandle();
         webDriver.switchTo().newWindow(org.openqa.selenium.WindowType.TAB);
         WindowSwitcher.switchToNewWindow(webDriver, originalWindow);
 
         webDriver.get(Constants.YOPMAIL_URL);
 
-//        String yopMailWindow = new ArrayList<>(webDriver.getWindowHandles()).get(1);
-//        webDriver.switchTo().window(yopMailWindow);
         homeYopMailPage.loginToYopMail(Constants.EMAIL);
 
         emailPage.clickRefreshButton();
 
-        emailPage.openFirstMail();
+        Thread.sleep(1000);
 
-        emailPage.getOTPCode();
+        emailPage.openFirstMail();
+        Thread.sleep(1000);
+
         String OTPCode = emailPage.getOTPCode();
+
+        Thread.sleep(1000);
 
         webDriver.close();
         webDriver.switchTo().window(originalWindow);
@@ -71,8 +65,7 @@ public class TC01 {
         homePage.enterOTPCode(OTPCode);
 
         homePage.clickTransferButton();
-//        softAssert.assertTrue(homePage.isTransferSuccessPopupDisplayed(), "Khong hien popup chuyen khoan thanh cong");
-
+        softAssert.assertTrue(homePage.isTransferSuccessPopupDisplayed(), "Khong hien popup chuyen khoan thanh cong");
 
         softAssert.assertAll();
     }

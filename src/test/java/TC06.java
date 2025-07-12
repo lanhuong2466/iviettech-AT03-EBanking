@@ -25,17 +25,24 @@ public class TC06 {
 
         leftMenu.openAccountDetailForm();
         accountDetails.openAccountDetails(100001403);
-        int availableBalance = accountDetails.getAvailableBalance();
+        int beforeAvailableBalance = accountDetails.getAvailableBalance();
 
         leftMenu.openTransferForm();
 
-        homePage.enterTranferDetails(100001403,100001399, availableBalance + 1,"Huong chuyen khoan 12000 dong");
+        homePage.enterTranferDetails(100001403,100001399, beforeAvailableBalance + 1,"Huong chuyen khoan 12000 dong");
 
-        softAssert.assertEquals(availableBalance, homePage.getAvailableBalance(), "Số dư khả dụng không đúng");
+        softAssert.assertEquals(beforeAvailableBalance, homePage.getAvailableBalance(), "Số dư khả dụng không đúng");
         homePage.openTransactionConfirmationForm();
 
         softAssert.assertTrue(homePage.isPopupInsufficientFundsDisplayed(), "Popup thông báo số tiền vượt mức không hiển thị");
 
+        leftMenu.openAccountDetailForm();
+        accountDetails.openAccountDetails(100001403);
+        int afterAvailableBalance = accountDetails.getAvailableBalance();
+
+        softAssert.assertEquals(beforeAvailableBalance,
+                afterAvailableBalance,
+                "Số dư khả dụng không đúng sau khi chuyển số tiền vượt mức");
         softAssert.assertAll();
 
     }
