@@ -23,7 +23,38 @@ public class HomePage {
             "//span[@class = 'ui-growl-title'][text() = 'Mời chọn tài khoản']");
     final private By popupInvalidAccountLocator = By.xpath(
             "//span[@class = 'ui-growl-title'][text() = 'Tài khoản không hợp lệ, quý khách vui lòng kiểm tra lại.']");
+    final private By popupNegativeAmountLocator = By.xpath(
+            "//span[@class = 'ui-growl-title'][text() = 'must be greater than or equal to 0']");
+    final private By popupInsufficientFundsLocator = By.xpath(
+            "//span[@class = 'ui-growl-title'][text() = 'Số tiền vượt mức']");
 
+
+    @Step("Verify the popup for insufficient funds is displayed")
+    public boolean isPopupInsufficientFundsDisplayed() {
+        WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(5));
+        try {
+            wait.until(driver -> driver.findElement(popupInsufficientFundsLocator).isDisplayed());
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Step("Get text from negative amount popup")
+    public String getpopupNegativeAmountText() {
+        return webDriver.findElement(popupNegativeAmountLocator).getText();
+    }
+
+    @Step("Verify the popup for negative amount is displayed")
+    public boolean isPopupNegativeAmountDisplayed() {
+        WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(5));
+        try {
+            wait.until(driver -> driver.findElement(popupNegativeAmountLocator).isDisplayed());
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
     @Step("Verify the popup for invalid account is displayed")
     public boolean isPopupInvalidAccountDisplayed() {

@@ -12,28 +12,32 @@ import pages.EBanking.LoginPage;
 import pages.Yopmail.EmailPage;
 import pages.Yopmail.HomeYopMailPage;
 import utils.Constants;
+import utils.WindowSwitcher;
 
 import java.time.Duration;
 
-public class TC05 {
+public class TC06 {
 
     @Test
-    public void VerifyErrorMessageIsDisplayedWhenTransferringANegativeAmount() {
+    public void VerifyErrorMessageIsDisplayedWhenTheSourceAccountHasInsufficientFunds() {
+
         loginPage.Login(Constants.USERNAME, Constants.PASSWORD);
+
+        leftMenu.openAccountDetailForm();
+        accountDetails.openAccountDetails(100001403);
+        int availableBalance = accountDetails.getAvailableBalance();
 
         leftMenu.openTransferForm();
 
-        homePage.enterTranferDetails(100001403,
-                100001399,
-                -12000,
-                "Huong chuyen khoan 12000 dong");
+        homePage.enterTranferDetails(100001403,100001399, availableBalance + 1,"Huong chuyen khoan 12000 dong");
 
+        softAssert.assertEquals(availableBalance, homePage.getAvailableBalance(), "Số dư khả dụng không đúng");
         homePage.openTransactionConfirmationForm();
 
-        softAssert.assertTrue(homePage.isPopupNegativeAmountDisplayed(), "Popup thông báo số tiền chuyển khoản không hợp lệ không hiển thị");
-        softAssert.assertEquals(homePage.getpopupNegativeAmountText(), "Negative amount is not allowed for transfer.", "Nội dung thông báo không đúng");
+        softAssert.assertTrue(homePage.isPopupInsufficientFundsDisplayed(), "Popup thông báo số tiền vượt mức không hiển thị");
 
         softAssert.assertAll();
+
     }
 
     @BeforeMethod
