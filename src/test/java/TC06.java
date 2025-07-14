@@ -5,14 +5,10 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
-import pages.EBanking.AccountDetails;
-import pages.EBanking.HomePage;
-import pages.EBanking.LeftMenu;
-import pages.EBanking.LoginPage;
+import pages.EBanking.*;
 import pages.Yopmail.EmailPage;
 import pages.Yopmail.HomeYopMailPage;
 import utils.Constants;
-import utils.WindowSwitcher;
 
 import java.time.Duration;
 
@@ -30,13 +26,13 @@ public class TC06 {
 
         leftMenu.openTransferForm();
 
-        homePage.enterTranferDetails(100001403,
+        transferDetailsForm.enterTransferDetails(100001403,
                 100001399,
                 beforeAvailableBalance + 1,
                 "Huong chuyen khoan 12000 dong");
 
         softAssert.assertEquals(beforeAvailableBalance, homePage.getAvailableBalance(), "Số dư khả dụng không đúng");
-        homePage.openTransactionConfirmationForm();
+        transferDetailsForm.openTransactionConfirmationForm();
 
         softAssert.assertTrue(homePage.isPopupErrorDisplayed(), "Popup thông báo số tiền vượt mức không hiển thị");
 
@@ -65,6 +61,7 @@ public class TC06 {
         emailPage = new EmailPage(webDriver);
         leftMenu = new LeftMenu(webDriver);
         accountDetails = new AccountDetails(webDriver);
+        transferDetailsForm = new TransferDetailsForm(webDriver);
         webDriver.get(Constants.EBANKING_URL);
 
     }
@@ -82,4 +79,5 @@ public class TC06 {
     EmailPage emailPage;
     LeftMenu leftMenu;
     AccountDetails accountDetails;
+    TransferDetailsForm transferDetailsForm;
 }

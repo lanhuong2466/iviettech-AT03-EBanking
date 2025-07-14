@@ -5,17 +5,13 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
-import pages.EBanking.AccountDetails;
-import pages.EBanking.HomePage;
-import pages.EBanking.LeftMenu;
-import pages.EBanking.LoginPage;
+import pages.EBanking.*;
 import pages.Yopmail.EmailPage;
 import pages.Yopmail.HomeYopMailPage;
 import utils.Constants;
 import utils.WindowSwitcher;
 
 import java.time.Duration;
-import java.util.ArrayList;
 
 public class TC01 {
 
@@ -32,7 +28,7 @@ public class TC01 {
         // Mở form chuyển tiền
         leftMenu.openTransferForm();
 
-        homePage.enterTranferDetails(100001403,
+        transferDetailsForm.enterTransferDetails(100001403,
                 100001399, 12000,
                 "Huong chuyen khoan 12000 dong");
 
@@ -40,7 +36,7 @@ public class TC01 {
         softAssert.assertEquals(homePage.getAvailableBalance(),
                 beforeAvailableBalance, "So du kha dung khong dung");
 
-        homePage.openTransactionConfirmationForm();
+        transferDetailsForm.openTransactionConfirmationForm();
 
         homePage.openOTPEntryForm();
 
@@ -86,6 +82,7 @@ public class TC01 {
         emailPage = new EmailPage(webDriver);
         leftMenu = new LeftMenu(webDriver);
         accountDetails = new AccountDetails(webDriver);
+        transferDetailsForm = new TransferDetailsForm(webDriver);
         webDriver.get(Constants.EBANKING_URL);
 
     }
@@ -103,6 +100,7 @@ public class TC01 {
     EmailPage emailPage;
     LeftMenu leftMenu;
     AccountDetails accountDetails;
+    TransferDetailsForm transferDetailsForm;
     int beforeAvailableBalance;
     String originalWindow;
     String OTPCode;
