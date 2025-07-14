@@ -28,7 +28,7 @@ public class TC04 {
                 12000,
                 "Huong chuyen khoan 12000 dong");
 
-        transferDetailsForm.openTransactionConfirmationForm();
+        transferDetailsForm.openTransferConfirmationForm();
 
         softAssert.assertTrue(homePage.isPopupErrorDisplayed(), "Popup Tài khoản không hợp lệ, quý khách vui lòng kiểm tra lại không hiển thị");
 
@@ -54,7 +54,7 @@ public class TC04 {
         transferDetailsForm.selectSourceAccount(100001403);
         transferDetailsForm.enterAmount(12000);
         transferDetailsForm.enterPaymentContent("Huong chuyen khoan 12000 dong");
-        transferDetailsForm.openTransactionConfirmationForm();
+        transferDetailsForm.openTransferConfirmationForm();
 
         softAssert.assertTrue(homePage.isPopupErrorDisplayed(), "Popup Tài khoản không hợp lệ, quý khách vui lòng kiểm tra lại không hiển thị");
 

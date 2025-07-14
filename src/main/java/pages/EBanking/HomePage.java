@@ -59,11 +59,6 @@ public class HomePage {
     }
 
 
-    @Step("Click on confirm button to open OTP entry form")
-    public void openOTPEntryForm() {
-        webDriver.findElement(confirmButtonLocator).click();
-    }
-
     @Step("Verify transfer success popup is displayed")
     public boolean isTransferSuccessPopupDisplayed() {
         WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(5));

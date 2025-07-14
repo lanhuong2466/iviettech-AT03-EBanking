@@ -29,7 +29,7 @@ public class TC05 {
                 -12000,
                 "Huong chuyen khoan 12000 dong");
 
-        transferDetailsForm.openTransactionConfirmationForm();
+        transferDetailsForm.openTransferConfirmationForm();
 
         softAssert.assertTrue(homePage.isPopupErrorDisplayed(),
                 "Popup thông báo số tiền chuyển khoản không hợp lệ không hiển thị");

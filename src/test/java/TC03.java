@@ -19,10 +19,10 @@ public class TC03 {
 
         leftMenu.openTransferForm();
 
-        transferDetailsForm.enterDestinationAccount(100001399);
+        transferDetailsForm.enterRecipientAccount(100001399);
         transferDetailsForm.enterAmount(12000);
         transferDetailsForm.enterPaymentContent("Huong chuyen khoan 12000 dong");
-        transferDetailsForm.openTransactionConfirmationForm();
+        transferDetailsForm.openTransferConfirmationForm();
 
         softAssert.assertTrue(homePage.isPopupSelectAnAccountDisplayed(), "Popup Mời chọn tài khoản không hiển thị");
 

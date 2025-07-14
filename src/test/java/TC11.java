@@ -5,10 +5,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
-import pages.EBanking.AccountDetails;
-import pages.EBanking.HomePage;
-import pages.EBanking.LeftMenu;
-import pages.EBanking.LoginPage;
+import pages.EBanking.*;
 import pages.Yopmail.EmailPage;
 import pages.Yopmail.HomeYopMailPage;
 import utils.Constants;
@@ -17,7 +14,7 @@ import java.time.Duration;
 
 public class TC11 {
 
-    @Test
+    @Test(description = "Verify error message is displayed when non-numeric value is entered as transfer amount")
     public void VerifyErrorMessageIsDisplayedWHenNonNumericValueIsEnteredAsTransferAmount() {
 
         loginPage.Login(Constants.USERNAME, Constants.PASSWORD);
@@ -27,6 +24,25 @@ public class TC11 {
         int beforeAvailableBalance = accountDetails.getAvailableBalance();
 
         leftMenu.openTransferForm();
+
+        transferDetailsForm.selectSourceAccount(100001403);
+        transferDetailsForm.enterRecipientAccount("hello");
+        transferDetailsForm.enterAmount(12000);
+        transferDetailsForm.enterPaymentContent("Huong chuyen khoan 12000 dong");
+
+        transferDetailsForm.openTransferConfirmationForm();
+
+        softAssert.assertEquals(homePage.getpopupErrorText(),
+                "Amount must be a postive number.",
+                "Nội dung thông báo không đúng");
+
+        leftMenu.openAccountDetailForm();
+        accountDetails.openAccountDetails(100001403);
+        int afterAvailableBalance = accountDetails.getAvailableBalance();
+
+        softAssert.assertEquals(beforeAvailableBalance,
+                afterAvailableBalance,
+                "Số dư khả dụng không đúng sau khi  nhập vào số tiền không phải là số");
 
         softAssert.assertAll();
     }
@@ -45,6 +61,8 @@ public class TC11 {
         emailPage = new EmailPage(webDriver);
         leftMenu = new LeftMenu(webDriver);
         accountDetails = new AccountDetails(webDriver);
+        transferDetailsForm = new TransferDetailsForm(webDriver);
+        transferConfirmationForm = new TransferConfirmationForm(webDriver);
         webDriver.get(Constants.EBANKING_URL);
 
     }
@@ -62,4 +80,6 @@ public class TC11 {
     EmailPage emailPage;
     LeftMenu leftMenu;
     AccountDetails accountDetails;
+    TransferDetailsForm transferDetailsForm;
+    TransferConfirmationForm transferConfirmationForm;
 }

@@ -36,9 +36,15 @@ public class TC01 {
         softAssert.assertEquals(homePage.getAvailableBalance(),
                 beforeAvailableBalance, "So du kha dung khong dung");
 
-        transferDetailsForm.openTransactionConfirmationForm();
+        transferDetailsForm.openTransferConfirmationForm();
 
-        homePage.openOTPEntryForm();
+        // Kiểm tra hiển thị đúng thông tin chuyển tiền
+//        softAssert.assertEquals(transferConfirmationForm.getSourceAccountId(),
+//                transferDetailsForm.getSourceAccountId(), "So tai khoan gui khong dung");
+
+
+
+        transferConfirmationForm.openOTPEntryForm();
 
         // Chuyển sang tab Yopmail để lấy mã OTP
         originalWindow = webDriver.getWindowHandle();
@@ -83,6 +89,7 @@ public class TC01 {
         leftMenu = new LeftMenu(webDriver);
         accountDetails = new AccountDetails(webDriver);
         transferDetailsForm = new TransferDetailsForm(webDriver);
+        transferConfirmationForm = new TransferConfirmationForm(webDriver);
         webDriver.get(Constants.EBANKING_URL);
 
     }
@@ -101,6 +108,7 @@ public class TC01 {
     LeftMenu leftMenu;
     AccountDetails accountDetails;
     TransferDetailsForm transferDetailsForm;
+    TransferConfirmationForm transferConfirmationForm;
     int beforeAvailableBalance;
     String originalWindow;
     String OTPCode;

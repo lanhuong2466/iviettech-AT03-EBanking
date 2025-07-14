@@ -15,8 +15,9 @@ public class TransferConfirmationForm {
         this.webDriver = webDriver;
     }
 
-    @Step("Click on Confirm button")
-    public void clickConfirmButton() {
+
+    @Step("Click on confirm button to open OTP entry form")
+    public void openOTPEntryForm() {
         webDriver.findElement(confirmButtonLocator).click();
     }
 

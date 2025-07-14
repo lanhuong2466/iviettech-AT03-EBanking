@@ -32,7 +32,7 @@ public class TC06 {
                 "Huong chuyen khoan 12000 dong");
 
         softAssert.assertEquals(beforeAvailableBalance, homePage.getAvailableBalance(), "Số dư khả dụng không đúng");
-        transferDetailsForm.openTransactionConfirmationForm();
+        transferDetailsForm.openTransferConfirmationForm();
 
         softAssert.assertTrue(homePage.isPopupErrorDisplayed(), "Popup thông báo số tiền vượt mức không hiển thị");
 
