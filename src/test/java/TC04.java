@@ -18,13 +18,13 @@ import utils.WindowSwitcher;
 import java.time.Duration;
 
 public class TC04 {
-    @Test
-    public void VerifyErrorPopupIsDisplayedWhenTheDestinationAccountIsInvalidOrNotEntered() {
+    @Test(description = "Verify error message is displayed when the destination account does not exist / is not entered")
+    public void VerifyErrorPopupIsDisplayedWhenTheDestinationAccountIsInvalid() {
         loginPage.Login(Constants.USERNAME, Constants.PASSWORD);
 
         leftMenu.openAccountDetailForm();
         accountDetails.openAccountDetails(100001403);
-        int beforeAvailableBalance = accountDetails.getAvailableBalance();
+        beforeAvailableBalance = accountDetails.getAvailableBalance();
 
         leftMenu.openTransferForm();
 
@@ -35,14 +35,13 @@ public class TC04 {
 
         homePage.openTransactionConfirmationForm();
 
-        softAssert.assertTrue(homePage.isPopupInvalidAccountDisplayed(), "Popup Tài khoản không hợp lệ, quý khách vui lòng kiểm tra lại không hiển thị");
+        softAssert.assertTrue(homePage.isPopupErrorDisplayed(), "Popup Tài khoản không hợp lệ, quý khách vui lòng kiểm tra lại không hiển thị");
 
         leftMenu.openAccountDetailForm();
         accountDetails.openAccountDetails(100001403);
-        int afterAvailableBalance = accountDetails.getAvailableBalance();
+        afterAvailableBalance = accountDetails.getAvailableBalance();
 
-        softAssert.assertEquals(beforeAvailableBalance,
-                afterAvailableBalance,
+        softAssert.assertEquals(beforeAvailableBalance,afterAvailableBalance,
                 "Số dư khả dụng không đúng sau khi chuyển tiền đến tài khoản không hợp lệ");
 
         softAssert.assertAll();
@@ -54,7 +53,7 @@ public class TC04 {
 
         leftMenu.openAccountDetailForm();
         accountDetails.openAccountDetails(100001403);
-        int beforeAvailableBalance = accountDetails.getAvailableBalance();
+        beforeAvailableBalance = accountDetails.getAvailableBalance();
         
         leftMenu.openTransferForm();
         homePage.selectSourceAccount(100001403);
@@ -62,14 +61,13 @@ public class TC04 {
         homePage.enterPaymentContent("Huong chuyen khoan 12000 dong");
         homePage.openTransactionConfirmationForm();
 
-        softAssert.assertTrue(homePage.isPopupInvalidAccountDisplayed(), "Popup Tài khoản không hợp lệ, quý khách vui lòng kiểm tra lại không hiển thị");
+        softAssert.assertTrue(homePage.isPopupErrorDisplayed(), "Popup Tài khoản không hợp lệ, quý khách vui lòng kiểm tra lại không hiển thị");
 
         leftMenu.openAccountDetailForm();
         accountDetails.openAccountDetails(100001403);
-        int afterAvailableBalance = accountDetails.getAvailableBalance();
+        afterAvailableBalance = accountDetails.getAvailableBalance();
 
-        softAssert.assertEquals(beforeAvailableBalance,
-                afterAvailableBalance,
+        softAssert.assertEquals(beforeAvailableBalance, afterAvailableBalance,
                 "Số dư khả dụng không đúng sau khi chuyển tiền đến tài khoản không hợp lệ");
 
         softAssert.assertAll();
@@ -106,5 +104,7 @@ public class TC04 {
     EmailPage emailPage;
     LeftMenu leftMenu;
     AccountDetails accountDetails;
+    int beforeAvailableBalance;
+    int afterAvailableBalance;
 
 }

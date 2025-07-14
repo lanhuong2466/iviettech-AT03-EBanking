@@ -17,7 +17,7 @@ import java.time.Duration;
 
 public class TC05 {
 
-    @Test
+    @Test(description = "Verify error message is displayed when transferring a negative amount")
     public void VerifyErrorMessageIsDisplayedWhenTransferringANegativeAmount() {
         loginPage.Login(Constants.USERNAME, Constants.PASSWORD);
 
@@ -34,8 +34,10 @@ public class TC05 {
 
         homePage.openTransactionConfirmationForm();
 
-        softAssert.assertTrue(homePage.isPopupNegativeAmountDisplayed(), "Popup thông báo số tiền chuyển khoản không hợp lệ không hiển thị");
-        softAssert.assertEquals(homePage.getpopupNegativeAmountText(), "Negative amount is not allowed for transfer.", "Nội dung thông báo không đúng");
+        softAssert.assertTrue(homePage.isPopupErrorDisplayed(),
+                "Popup thông báo số tiền chuyển khoản không hợp lệ không hiển thị");
+        softAssert.assertEquals(homePage.getpopupErrorText(),
+                "Negative amount is not allowed for transfer.", "Nội dung thông báo không đúng");
 
         leftMenu.openAccountDetailForm();
         accountDetails.openAccountDetails(100001403);

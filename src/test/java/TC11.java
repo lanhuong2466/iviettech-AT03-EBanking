@@ -15,19 +15,18 @@ import utils.Constants;
 
 import java.time.Duration;
 
-public class TC03 {
-    @Test(description = "Verify error message is displayed when source account is not selected")
-    public void VerifyErrorWhenNoSourceAccountIsSelected() {
+public class TC11 {
+
+    @Test
+    public void VerifyErrorMessageIsDisplayedWHenNonNumericValueIsEnteredAsTransferAmount() {
+
         loginPage.Login(Constants.USERNAME, Constants.PASSWORD);
 
+        leftMenu.openAccountDetailForm();
+        accountDetails.openAccountDetails(100001403);
+        int beforeAvailableBalance = accountDetails.getAvailableBalance();
+
         leftMenu.openTransferForm();
-
-        homePage.enterDestinationAccount(100001399);
-        homePage.enterAmount(12000);
-        homePage.enterPaymentContent("Huong chuyen khoan 12000 dong");
-        homePage.openTransactionConfirmationForm();
-
-        softAssert.assertTrue(homePage.isPopupSelectAnAccountDisplayed(), "Popup Mời chọn tài khoản không hiển thị");
 
         softAssert.assertAll();
     }
@@ -63,5 +62,4 @@ public class TC03 {
     EmailPage emailPage;
     LeftMenu leftMenu;
     AccountDetails accountDetails;
-
 }

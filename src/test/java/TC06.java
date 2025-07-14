@@ -18,7 +18,8 @@ import java.time.Duration;
 
 public class TC06 {
 
-    @Test
+    @Test(description = "Verify error message is displayed when the source account " +
+            "has insufficient funds / transfer amount exceeds available balance")
     public void VerifyErrorMessageIsDisplayedWhenTheSourceAccountHasInsufficientFunds() {
 
         loginPage.Login(Constants.USERNAME, Constants.PASSWORD);
@@ -29,12 +30,15 @@ public class TC06 {
 
         leftMenu.openTransferForm();
 
-        homePage.enterTranferDetails(100001403,100001399, beforeAvailableBalance + 1,"Huong chuyen khoan 12000 dong");
+        homePage.enterTranferDetails(100001403,
+                100001399,
+                beforeAvailableBalance + 1,
+                "Huong chuyen khoan 12000 dong");
 
         softAssert.assertEquals(beforeAvailableBalance, homePage.getAvailableBalance(), "Số dư khả dụng không đúng");
         homePage.openTransactionConfirmationForm();
 
-        softAssert.assertTrue(homePage.isPopupInsufficientFundsDisplayed(), "Popup thông báo số tiền vượt mức không hiển thị");
+        softAssert.assertTrue(homePage.isPopupErrorDisplayed(), "Popup thông báo số tiền vượt mức không hiển thị");
 
         leftMenu.openAccountDetailForm();
         accountDetails.openAccountDetails(100001403);

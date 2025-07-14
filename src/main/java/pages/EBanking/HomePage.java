@@ -16,44 +16,22 @@ public class HomePage {
     final private By paymentContentTextboxLocator = By.id("j_idt23:j_idt42");
     final private By confirmButtonLocator = By.name("j_idt23:j_idt44");
     final private By OTPTextboxLocator = By.name("j_idt23:j_idt46");
-    final private By TranferButtonLocator = By.name("j_idt23:j_idt48");
+    final private By tranferButtonLocator = By.name("j_idt23:j_idt48");
     final private By availableBalanceLocator = By.id("j_idt23:amount");
     final private By popupTransferSuccessLocator = By.xpath(
             "//*[@id = 'primefacesmessagedlg']//div[text() = 'Chuyển tiền thành công']");
-    final private By popupSelectAnAccountLocator = By.xpath(
-            "//span[@class = 'ui-growl-title'][text() = 'Mời chọn tài khoản']");
-    final private By popupInvalidAccountLocator = By.xpath(
-            "//span[@class = 'ui-growl-title'][text() = 'Tài khoản không hợp lệ, quý khách vui lòng kiểm tra lại.']");
-    final private By popupNegativeAmountLocator = By.xpath(
-            "//span[@class = 'ui-growl-title'][text() = 'must be greater than or equal to 0']");
-    final private By popupInsufficientFundsLocator = By.xpath(
-            "//span[@class = 'ui-growl-title'][text() = 'Số tiền vượt mức']");
+    final private By popupErrorLocator = By.xpath("//span[@class = 'ui-growl-title']");
 
-
-    @Step("Verify the popup for insufficient funds is displayed")
-    public boolean isPopupInsufficientFundsDisplayed() {
-        WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(popupInsufficientFundsLocator));
-        return true;
-    }
 
     @Step("Get text from negative amount popup")
-    public String getpopupNegativeAmountText() {
-        return webDriver.findElement(popupNegativeAmountLocator).getText();
+    public String getpopupErrorText() {
+        return webDriver.findElement(popupErrorLocator).getText();
     }
 
     @Step("Verify the popup for negative amount is displayed")
-    public boolean isPopupNegativeAmountDisplayed() {
+    public boolean isPopupErrorDisplayed() {
         WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(popupNegativeAmountLocator));
-        return true;
-
-    }
-
-    @Step("Verify the popup for invalid account is displayed")
-    public boolean isPopupInvalidAccountDisplayed() {
-        WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(popupInvalidAccountLocator));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(popupErrorLocator));
         return true;
 
     }
@@ -61,39 +39,39 @@ public class HomePage {
     @Step("Verify the popup to select an account is displayed")
     public boolean isPopupSelectAnAccountDisplayed() {
         WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(popupSelectAnAccountLocator));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(popupErrorLocator));
         return true;
     }
 
     @Step("Get available balance")
     public int getAvailableBalance() {
-        int balance = Integer.parseInt(webDriver.findElement(availableBalanceLocator).getText().replace(" VNĐ", "").replace(",", ""));
+        int balance = Integer.parseInt(webDriver.findElement(availableBalanceLocator).
+                getText().replace(" VNĐ", "").replace(",", ""));
         return balance;
     }
 
     @Step("Click transfer button")
     public void clickTransferButton() {
-        webDriver.navigate().refresh();
-        webDriver.findElement(TranferButtonLocator).click();
+        webDriver.findElement(tranferButtonLocator).click();
         WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(5));
         wait.until(ExpectedConditions.visibilityOfElementLocated(popupTransferSuccessLocator));
     }
 
     @Step("Enter OTP code")
     public void enterOTPCode(String otp) {
-        webDriver.navigate().refresh();
         webDriver.findElement(OTPTextboxLocator).sendKeys(otp);
     }
 
     @Step("Select source account")
     public void selectSourceAccount(int accountId) {
         webDriver.findElement(sourceAccountComboboxLocator).click();
-        webDriver.findElement(By.xpath("//li[text() = '" + String.valueOf(accountId) + "']")).click();
+        webDriver.findElement(By.xpath(String.format("//li[text() = '%s']", accountId))).click();
     }
 
     @Step("Enter destination account")
     public void enterDestinationAccount(int destinationAccount) {
-        webDriver.findElement(destinationAccountTextboxLocator).sendKeys(String.valueOf(destinationAccount));
+        webDriver.findElement(destinationAccountTextboxLocator).
+                sendKeys(String.valueOf(destinationAccount));
     }
 
     @Step("Enter amount")
