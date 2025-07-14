@@ -21,7 +21,7 @@ public class TC11 {
 
         leftMenu.openAccountDetailForm();
         accountDetails.openAccountDetails(100001403);
-        int beforeAvailableBalance = accountDetails.getAvailableBalance();
+        beforeAvailableBalance = accountDetails.getAvailableBalance();
 
         leftMenu.openTransferForm();
 
@@ -38,7 +38,8 @@ public class TC11 {
 
         leftMenu.openAccountDetailForm();
         accountDetails.openAccountDetails(100001403);
-        int afterAvailableBalance = accountDetails.getAvailableBalance();
+
+        afterAvailableBalance = accountDetails.getAvailableBalance();
 
         softAssert.assertEquals(beforeAvailableBalance,
                 afterAvailableBalance,
@@ -82,4 +83,6 @@ public class TC11 {
     AccountDetails accountDetails;
     TransferDetailsForm transferDetailsForm;
     TransferConfirmationForm transferConfirmationForm;
+    double beforeAvailableBalance;
+    double afterAvailableBalance;
 }

@@ -101,7 +101,7 @@ public class TC04 {
     LeftMenu leftMenu;
     AccountDetails accountDetails;
     TransferDetailsForm transferDetailsForm;
-    int beforeAvailableBalance;
-    int afterAvailableBalance;
+    double beforeAvailableBalance;
+    double afterAvailableBalance;
 
 }

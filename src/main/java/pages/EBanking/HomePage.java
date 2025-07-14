@@ -17,7 +17,13 @@ public class HomePage {
     final private By popupTransferSuccessLocator = By.xpath(
             "//*[@id = 'primefacesmessagedlg']//div[text() = 'Chuyển tiền thành công']");
     final private By popupErrorLocator = By.xpath("//span[@class = 'ui-growl-title']");
+    final private By popupCloseButtonLocator = By.xpath("//*[@id = 'primefacesmessagedlg']//a");
 
+
+    @Step("Click close button of the notification popup ")
+    public void closeTheNotificationPopup() {
+        webDriver.findElement(popupCloseButtonLocator).click();
+    }
 
     @Step("Get text from negative amount popup")
     public String getpopupErrorText() {
@@ -40,8 +46,8 @@ public class HomePage {
     }
 
     @Step("Get available balance")
-    public int getAvailableBalance() {
-        int balance = Integer.parseInt(webDriver.findElement(availableBalanceLocator).
+    public double getAvailableBalance() {
+        double balance = Double.parseDouble(webDriver.findElement(availableBalanceLocator).
                 getText().replace(" VNĐ", "").replace(",", ""));
         return balance;
     }

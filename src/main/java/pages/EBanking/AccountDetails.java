@@ -23,7 +23,7 @@ public class AccountDetails {
 
     //tr[%d
     @Step("Get available balance from account details")
-    public int getAvailableBalance() {
+    public double getAvailableBalance() {
 
         List<WebElement> rows = webDriver.findElements(By.xpath("//*[@id = 'j_idt29_content']//tr"));
         int lastRowIndex = rows.size();
@@ -32,7 +32,7 @@ public class AccountDetails {
         String xpath = String.format("//*[@id = 'j_idt29_content']//tr[%d]/td[2]", lastRowIndex - 1);
 
         // Lấy và xử lý số dư
-        int balance = Integer.parseInt(webDriver.findElement(By.xpath(xpath))
+        double balance = Double.parseDouble(webDriver.findElement(By.xpath(xpath))
                 .getText().replace(" VNĐ", "").replace(",", ""));
         return balance;
     }

@@ -11,6 +11,7 @@ import pages.Yopmail.HomeYopMailPage;
 import utils.Constants;
 import utils.WindowSwitcher;
 
+import java.math.BigDecimal;
 import java.time.Duration;
 
 public class TC01 {
@@ -28,8 +29,9 @@ public class TC01 {
         // Mở form chuyển tiền
         leftMenu.openTransferForm();
 
+        amount = 12000.0;
         transferDetailsForm.enterTransferDetails(100001403,
-                100001399, 12000,
+                100001399, amount,
                 "Huong chuyen khoan 12000 dong");
 
         // Kiểm tra hiển thị đúng số dư khả dụng
@@ -71,6 +73,16 @@ public class TC01 {
         softAssert.assertTrue(homePage.isTransferSuccessPopupDisplayed(),
                 "Khong hien popup chuyen khoan thanh cong");
 
+        homePage.closeTheNotificationPopup();
+
+        leftMenu.openAccountDetailForm();
+        accountDetails.openAccountDetails(100001403);
+        afterAvailableBalance = accountDetails.getAvailableBalance();
+
+
+        softAssert.assertEquals(afterAvailableBalance, (beforeAvailableBalance - amount - 1100),
+                "So du kha dung khong dung sau khi chuyen khoan thanh cong");
+
         softAssert.assertAll();
     }
 
@@ -109,9 +121,11 @@ public class TC01 {
     AccountDetails accountDetails;
     TransferDetailsForm transferDetailsForm;
     TransferConfirmationForm transferConfirmationForm;
-    int beforeAvailableBalance;
+    double beforeAvailableBalance;
+    double afterAvailableBalance;
     String originalWindow;
     String OTPCode;
+    Double amount;
 
 // pages chia lam 2: ebanking va yopmail,
     // leftmmenu taoj thanhf 1 page rieng biet

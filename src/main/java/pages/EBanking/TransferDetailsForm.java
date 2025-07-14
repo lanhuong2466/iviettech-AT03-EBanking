@@ -16,10 +16,7 @@ public class TransferDetailsForm {
         this.webDriver = webDriver;
     }
 
-    @Step("Click on confirm button to open OTP entry form")
-    public void openOTPEntryForm() {
-        webDriver.findElement(confirmButtonLocator).click();
-    }
+
 
 //    @Step("Get receive OTP via email text from transfer confirmation form")
 //    public String getReceiveOTPViaEmailText() {
@@ -76,7 +73,7 @@ public class TransferDetailsForm {
     }
 
     @Step("Enter amount")
-    public void enterAmount(int amount) {
+    public void enterAmount(double amount) {
         webDriver.findElement(amountTextboxLocator).sendKeys(String.valueOf(amount));
     }
 
@@ -91,7 +88,7 @@ public class TransferDetailsForm {
     }
 
     @Step("Enter transfer details")
-    public void enterTransferDetails(int sourceAccount, int destinationAccount, int amount, String content) {
+    public void enterTransferDetails(int sourceAccount, int destinationAccount, double amount, String content) {
         selectSourceAccount(sourceAccount);
         enterRecipientAccount(destinationAccount);
         enterAmount(amount);

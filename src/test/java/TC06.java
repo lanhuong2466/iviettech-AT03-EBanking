@@ -22,13 +22,13 @@ public class TC06 {
 
         leftMenu.openAccountDetailForm();
         accountDetails.openAccountDetails(100001403);
-        int beforeAvailableBalance = accountDetails.getAvailableBalance();
+        beforeAvailableBalance = accountDetails.getAvailableBalance();
 
         leftMenu.openTransferForm();
 
         transferDetailsForm.enterTransferDetails(100001403,
                 100001399,
-                beforeAvailableBalance + 1,
+                beforeAvailableBalance + 1.0,
                 "Huong chuyen khoan 12000 dong");
 
         softAssert.assertEquals(beforeAvailableBalance, homePage.getAvailableBalance(), "Số dư khả dụng không đúng");
@@ -38,7 +38,7 @@ public class TC06 {
 
         leftMenu.openAccountDetailForm();
         accountDetails.openAccountDetails(100001403);
-        int afterAvailableBalance = accountDetails.getAvailableBalance();
+        afterAvailableBalance = accountDetails.getAvailableBalance();
 
         softAssert.assertEquals(beforeAvailableBalance,
                 afterAvailableBalance,
@@ -80,4 +80,6 @@ public class TC06 {
     LeftMenu leftMenu;
     AccountDetails accountDetails;
     TransferDetailsForm transferDetailsForm;
+    double beforeAvailableBalance;
+    double afterAvailableBalance;
 }

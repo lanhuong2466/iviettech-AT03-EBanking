@@ -56,17 +56,17 @@ public class TransferConfirmationForm {
         // Tạo XPath động
         String xpath = String.format("//*[@id = 'j_idt29_content']//tr[%d]/td[2]", getCountRows() - (getCountRows() - 5));
 
-        String transferAmountNumber = webDriver.findElement(By.xpath(xpath)).getText();
-        return transferAmountNumber;
+        String transferAmountMessage = webDriver.findElement(By.xpath(xpath)).getText();
+        return transferAmountMessage;
     }
 
     @Step("Get transfer amount from transfer confirmation form")
-    public int getTransferAmountNumber() {
+    public double getTransferAmountNumber() {
 
         // Tạo XPath động
         String xpath = String.format("//*[@id = 'j_idt29_content']//tr[%d]/td[2]", getCountRows() - (getCountRows() - 3));
 
-        int transferAmountNumber = Integer.parseInt(webDriver.findElement(By.xpath(xpath)).getText());
+        double transferAmountNumber = Double.parseDouble(webDriver.findElement(By.xpath(xpath)).getText());
         return transferAmountNumber;
     }
 
@@ -80,6 +80,7 @@ public class TransferConfirmationForm {
         return sourceAccountId;
     }
 
+    @Step("Get count of rows in the transfer confirmation form")
     public int getCountRows() {
         List<WebElement> rows = webDriver.findElements(By.xpath("//*[@id = 'j_idt23:j_idt24_content']//tr"));
         return rows.size();
