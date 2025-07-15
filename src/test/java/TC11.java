@@ -41,8 +41,7 @@ public class TC11 {
 
         afterAvailableBalance = accountDetails.getAvailableBalance();
 
-        softAssert.assertEquals(beforeAvailableBalance,
-                afterAvailableBalance,
+        softAssert.assertEquals(beforeAvailableBalance, afterAvailableBalance,
                 "Số dư khả dụng không đúng sau khi  nhập vào số tiền không phải là số");
 
         softAssert.assertAll();

@@ -4,12 +4,20 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.util.List;
+import java.time.Duration;
 
 public class TransferConfirmationForm {
     private WebDriver webDriver;
     final private By confirmButtonLocator = By.name("j_idt23:j_idt44");
+    final private By sourceAccountIdLocator = By.id("j_idt23:j_idt27");
+    final private By transferAmountLocator = By.id("j_idt23:j_idt31");
+    final private By transferMessageLocator = By.id("j_idt23:j_idt35");
+    final private By recipientAccountIdLocator = By.id("j_idt23:j_idt37");
+    final private By recipientNameLocator = By.id("j_idt23:j_idt39");
+    final private By receiveOTPViaEmailLocator = By.id("j_idt23:j_idt43");
 
     public TransferConfirmationForm(WebDriver webDriver) {
         this.webDriver = webDriver;
@@ -23,67 +31,40 @@ public class TransferConfirmationForm {
 
     @Step("Get receive OTP via email text from transfer confirmation form")
     public String getReceiveOTPViaEmailText() {
-        // Tạo XPath động
-        String xpath = String.format("//*[@id = 'j_idt29_content']//tr[%d]/td[2]", getCountRows());
-
-        String receiveOTPViaEmail = webDriver.findElement(By.xpath(xpath)).getText();
-        return receiveOTPViaEmail;
+        return webDriver.findElement(receiveOTPViaEmailLocator).getText();
     }
 
     @Step("Get recipient name from transfer confirmation form")
     public String getRecipientName() {
-
-        // Tạo XPath động
-        String xpath = String.format("//*[@id = 'j_idt29_content']//tr[%d]/td[2]", getCountRows() - (getCountRows() - 7));
-
-        String recipientName = webDriver.findElement(By.xpath(xpath)).getText();
-        return recipientName;
+        return webDriver.findElement(recipientNameLocator).getText();
     }
 
     @Step("Get recipient account ID from transfer confirmation form")
     public int getRecipientAccountId() {
-
-        // Tạo XPath động
-        String xpath = String.format("//*[@id = 'j_idt29_content']//tr[%d]/td[2]", getCountRows() - (getCountRows() - 6));
-
-        int recipientAccountId = Integer.parseInt(webDriver.findElement(By.xpath(xpath)).getText());
-        return recipientAccountId;
+        return Integer.parseInt(webDriver.findElement(recipientAccountIdLocator).getText());
     }
 
     @Step("Get transfer message from transfer confirmation form")
-    public String getTransferMessageNumber() {
-
-        // Tạo XPath động
-        String xpath = String.format("//*[@id = 'j_idt29_content']//tr[%d]/td[2]", getCountRows() - (getCountRows() - 5));
-
-        String transferAmountMessage = webDriver.findElement(By.xpath(xpath)).getText();
-        return transferAmountMessage;
+    public String getTransferMessage() {
+        return webDriver.findElement(transferMessageLocator).getText();
     }
 
+
     @Step("Get transfer amount from transfer confirmation form")
-    public double getTransferAmountNumber() {
-
-        // Tạo XPath động
-        String xpath = String.format("//*[@id = 'j_idt29_content']//tr[%d]/td[2]", getCountRows() - (getCountRows() - 3));
-
-        double transferAmountNumber = Double.parseDouble(webDriver.findElement(By.xpath(xpath)).getText());
-        return transferAmountNumber;
+    public double getTransferAmount() {
+        return Double.parseDouble(webDriver.findElement(transferAmountLocator)
+                .getText()
+                .replace(" VNĐ", "")
+                .replace(",", ""));
     }
 
     @Step("Get source account ID from transfer confirmation form")
     public int getSourceAccountId() {
-
-        // Tạo XPath động
-        String xpath = String.format("//*[@id = 'j_idt29_content']//tr[%d]/td[2]", getCountRows() - (getCountRows() - 1));
-
-        int sourceAccountId = Integer.parseInt(webDriver.findElement(By.xpath(xpath)).getText());
-        return sourceAccountId;
-    }
-
-    @Step("Get count of rows in the transfer confirmation form")
-    public int getCountRows() {
-        List<WebElement> rows = webDriver.findElements(By.xpath("//*[@id = 'j_idt23:j_idt24_content']//tr"));
-        return rows.size();
+        WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(10));
+        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(sourceAccountIdLocator));
+        return Integer.parseInt(element.getText().trim());
     }
 
 }
+
+

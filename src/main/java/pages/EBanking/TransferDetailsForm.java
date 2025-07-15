@@ -17,37 +17,30 @@ public class TransferDetailsForm {
         this.webDriver = webDriver;
     }
 
-    @Step("Get recipient account name from transfer confirmation form")
+    @Step("Get transfer message from transfer details form")
+    public String getTransferMessage() {
+        String transferMessage = webDriver.findElement(transferMessageTextboxLocator).getAttribute("value");
+        return transferMessage;
+    }
+
+    @Step("Get transfer amount from transfer details form")
+    public int getTransferAmount() {
+        int transferAmount = Integer.parseInt(webDriver.findElement(amountTextboxLocator).getAttribute("value").replace(",", ""));
+        return transferAmount;
+    }
+
+    @Step("Get recipient account ID from transfer details form")
+    public int getRecipientAccountId() {
+        int recipientAccountId = Integer.parseInt(webDriver.findElement(recipientAccountTextboxLocator).getAttribute("value"));
+        return recipientAccountId;
+    }
+
+    @Step("Get recipient account name from transfer details form")
     public String getRecipientName() {
         String recipientName = webDriver.findElement(recipientNameLocator).getText();
         return recipientName;
     }
 
-//    @Step("Get receive OTP via email text from transfer confirmation form")
-//    public String getReceiveOTPViaEmailText() {
-//        String receiveOTPViaEmail = webDriver.findElement(By.xpath(xpath)).getText();
-//        return receiveOTPViaEmail;
-//    }
-//
-
-//
-//    @Step("Get recipient account ID from transfer confirmation form")
-//    public int getRecipientAccountId() {
-//        int recipientAccountId = Integer.parseInt(webDriver.findElement(By.xpath(xpath)).getText());
-//        return recipientAccountId;
-//    }
-//
-//    @Step("Get transfer message from transfer confirmation form")
-//    public String getTransferMessageNumber() {
-//        String transferAmountNumber = webDriver.findElement(By.xpath(xpath)).getText();
-//        return transferAmountNumber;
-//    }
-//
-//    @Step("Get transfer amount from transfer confirmation form")
-//    public int getTransferAmountNumber(int transferAmountNumber) {
-//        int transferAmountNumber = Integer.parseInt(webDriver.findElement(amountTextboxLocator).getAttribute(value));
-//        return transferAmountNumber;
-//    }
 
     @Step("Get source account ID from transfer details form")
     public int getSourceAccountId() {

@@ -11,7 +11,6 @@ import pages.Yopmail.HomeYopMailPage;
 import utils.Constants;
 import utils.WindowSwitcher;
 
-import java.math.BigDecimal;
 import java.time.Duration;
 
 public class TC01 {
@@ -40,14 +39,38 @@ public class TC01 {
 
         transferDetailsForm.openTransferConfirmationForm();
 
-//         Kiểm tra hiển thị đúng thông tin chuyển tiền
+        //Kiểm tra hiển thị đúng thông tin chuyển tiền
+        // Tài khoản gửi, Số tiền chuyển khoản, Nội dung chuyển khoản,
+        // Tài khoản nhận, Tên chủ tài khoản, Hình thức nhận mã giao dịch
+
+        leftMenu.openTransferForm();
+        transferDetailsForm.selectSourceAccount(100001403);
+
+        sourceAccountId = transferDetailsForm.getSourceAccountId();
+        transferAmount = transferDetailsForm.getTransferAmount();
+        transferMessage = transferDetailsForm.getTransferMessage();
+        recipientAccountId = transferDetailsForm.getRecipientAccountId();
+        recipientName = transferDetailsForm.getRecipientName();
+
+        transferDetailsForm.openTransferConfirmationForm();
 
         softAssert.assertEquals(transferConfirmationForm.getSourceAccountId(),
-                transferDetailsForm.getSourceAccountId(), "So tai khoan gui khong dung");
+                sourceAccountId, "So tai khoan gui khong dung");
+
+        softAssert.assertEquals(transferConfirmationForm.getTransferAmount(),
+                transferAmount, "So tien chuyen khoan khong dung");
+
+        softAssert.assertEquals(transferConfirmationForm.getTransferMessage(),
+                transferMessage, "Noi dung chuyen khoan khong dung");
+
+        softAssert.assertEquals(transferConfirmationForm.getRecipientAccountId(),
+                recipientAccountId, "So tai khoan nhan khong dung");
 
         softAssert.assertEquals(transferConfirmationForm.getRecipientName(),
-                transferDetailsForm.getRecipientName(), "Tên người nhận không đúng");
+                recipientName, "Ten nguoi nhan khong dung");
 
+        softAssert.assertEquals(transferConfirmationForm.getReceiveOTPViaEmailText(),
+                "Nhận qua Email", "Hinh thuc nhan ma OTP khong dung");
 
 
         transferConfirmationForm.openOTPEntryForm();
@@ -129,7 +152,12 @@ public class TC01 {
     double afterAvailableBalance;
     String originalWindow;
     String OTPCode;
-    Double amount;
+    double amount;
+    int sourceAccountId;
+    double transferAmount;
+    String transferMessage;
+    int recipientAccountId;
+    String recipientName;
 
 // pages chia lam 2: ebanking va yopmail,
     // leftmmenu taoj thanhf 1 page rieng biet
@@ -139,7 +167,6 @@ public class TC01 {
 
     //click nút xác nận 2,3 lần
     // refresh trang ma otp
-    // Tài khoản gửi, Số tiền chuyển khoản, Nội dung chuyển khoản, Tài khoản nhận, Tên chủ tài khoản, Hình thức nhận mã giao dịch
 
 }
 
