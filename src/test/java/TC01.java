@@ -40,9 +40,13 @@ public class TC01 {
 
         transferDetailsForm.openTransferConfirmationForm();
 
-        // Kiểm tra hiển thị đúng thông tin chuyển tiền
-//        softAssert.assertEquals(transferConfirmationForm.getSourceAccountId(),
-//                transferDetailsForm.getSourceAccountId(), "So tai khoan gui khong dung");
+//         Kiểm tra hiển thị đúng thông tin chuyển tiền
+
+        softAssert.assertEquals(transferConfirmationForm.getSourceAccountId(),
+                transferDetailsForm.getSourceAccountId(), "So tai khoan gui khong dung");
+
+        softAssert.assertEquals(transferConfirmationForm.getRecipientName(),
+                transferDetailsForm.getRecipientName(), "Tên người nhận không đúng");
 
 
 

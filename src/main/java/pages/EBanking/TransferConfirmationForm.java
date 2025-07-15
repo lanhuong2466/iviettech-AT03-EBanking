@@ -30,14 +30,14 @@ public class TransferConfirmationForm {
         return receiveOTPViaEmail;
     }
 
-    @Step("Get recipient account name from transfer confirmation form")
-    public String getRecipientAccountName() {
+    @Step("Get recipient name from transfer confirmation form")
+    public String getRecipientName() {
 
         // Tạo XPath động
         String xpath = String.format("//*[@id = 'j_idt29_content']//tr[%d]/td[2]", getCountRows() - (getCountRows() - 7));
 
-        String recipientAccountName = webDriver.findElement(By.xpath(xpath)).getText();
-        return recipientAccountName;
+        String recipientName = webDriver.findElement(By.xpath(xpath)).getText();
+        return recipientName;
     }
 
     @Step("Get recipient account ID from transfer confirmation form")

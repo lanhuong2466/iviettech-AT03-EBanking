@@ -26,8 +26,8 @@ public class TC11 {
         leftMenu.openTransferForm();
 
         transferDetailsForm.selectSourceAccount(100001403);
-        transferDetailsForm.enterRecipientAccount("hello");
-        transferDetailsForm.enterAmount(12000);
+        transferDetailsForm.enterRecipientAccount(100001394);
+        transferDetailsForm.enterAmount("Hello VietNam");
         transferDetailsForm.enterPaymentContent("Huong chuyen khoan 12000 dong");
 
         transferDetailsForm.openTransferConfirmationForm();

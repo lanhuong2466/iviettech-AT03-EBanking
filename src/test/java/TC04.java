@@ -13,7 +13,7 @@ import utils.Constants;
 import java.time.Duration;
 
 public class TC04 {
-    @Test(description = "Verify error message is displayed when the destination account does not exist / is not entered")
+    @Test(description = "Verify error message is displayed when the destination account does not exist")
     public void VerifyErrorPopupIsDisplayedWhenTheDestinationAccountIsInvalid() {
         loginPage.Login(Constants.USERNAME, Constants.PASSWORD);
 
@@ -42,7 +42,7 @@ public class TC04 {
         softAssert.assertAll();
     }
 
-    @Test
+    @Test(description = "Verify error message is displayed when the destination account is not entered")
     public void VerifyErrorPopupIsDisplayedWhenTheDestinationAccountIsNotEntered() {
         loginPage.Login(Constants.USERNAME, Constants.PASSWORD);
 

@@ -11,12 +11,17 @@ public class TransferDetailsForm {
     final private By amountTextboxLocator = By.id("j_idt23:j_idt40");
     final private By transferMessageTextboxLocator = By.id("j_idt23:j_idt42");
     final private By confirmButtonLocator = By.name("j_idt23:j_idt44");
+    final private By recipientNameLocator = By.id("j_idt23:out");
 
     public TransferDetailsForm(WebDriver webDriver) {
         this.webDriver = webDriver;
     }
 
-
+    @Step("Get recipient account name from transfer confirmation form")
+    public String getRecipientName() {
+        String recipientName = webDriver.findElement(recipientNameLocator).getText();
+        return recipientName;
+    }
 
 //    @Step("Get receive OTP via email text from transfer confirmation form")
 //    public String getReceiveOTPViaEmailText() {
@@ -24,11 +29,7 @@ public class TransferDetailsForm {
 //        return receiveOTPViaEmail;
 //    }
 //
-//    @Step("Get recipient account name from transfer confirmation form")
-//    public String getRecipientAccountName() {
-//        String recipientAccountName = webDriver.findElement(By.xpath(xpath)).getText();
-//        return recipientAccountName;
-//    }
+
 //
 //    @Step("Get recipient account ID from transfer confirmation form")
 //    public int getRecipientAccountId() {
@@ -61,15 +62,23 @@ public class TransferDetailsForm {
     }
 
     @Step("Enter characters into the recipient account input field")
-    public void enterRecipientAccount(String recipientAccount) {
-        webDriver.findElement(recipientAccountTextboxLocator).
-                sendKeys(recipientAccount);
+    public int getRecipientAccount() {
+        String value = webDriver.findElement(recipientAccountTextboxLocator).getAttribute("value");
+        if (value == null || value.trim().isEmpty()) {
+            throw new IllegalArgumentException("Recipient account is missing or empty");
+        }
+        return Integer.parseInt(value);
     }
 
     @Step("Enter recipient account number")
     public void enterRecipientAccount(int recipientAccount) {
         webDriver.findElement(recipientAccountTextboxLocator).
                 sendKeys(String.valueOf(recipientAccount));
+    }
+
+    @Step("Enter amount")
+    public void enterAmount(String amount) {
+        webDriver.findElement(amountTextboxLocator).sendKeys(amount);
     }
 
     @Step("Enter amount")
