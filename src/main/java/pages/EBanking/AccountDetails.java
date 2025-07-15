@@ -18,10 +18,10 @@ public class AccountDetails {
     public void openAccountDetails(int accountId) {
         // Click on the account details link
         //dùng string format để thay thế
-        webDriver.findElement(By.xpath(String.format("//*[@id ='j_idt27_data']//a[text() = '%s']",accountId))).click();
+        webDriver.findElement(By.xpath(String.format("//*[@id ='j_idt27_data']//a[text() = '%s']", accountId))).click();
     }
 
-    //tr[%d
+    //tr[%d] lấy số dư tài khoản: get all text -> index of
     @Step("Get available balance from account details")
     public double getAvailableBalance() {
 

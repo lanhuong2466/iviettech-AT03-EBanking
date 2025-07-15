@@ -28,6 +28,7 @@ public class TC01 {
         // Mở form chuyển tiền
         leftMenu.openTransferForm();
 
+        //lấy số dư rồi trừ thuế tùm lum rồi ra số tiền chuyển
         amount = 12000.0;
         transferDetailsForm.enterTransferDetails(100001403,
                 100001399, amount,
@@ -167,6 +168,12 @@ public class TC01 {
 
     //click nút xác nận 2,3 lần
     // refresh trang ma otp
+
+    //c1: tạo 1 tài khoản mới luôn
+    //c2: vào tài khoản ở leftmenu rồi bốc 1 tài khoản bất kỳ ra để test
+    //tách thêm 1 page là entryOTPForm
+
+    //((JavaScriptExecutor) webDriver).executeScript("return arguments[0].value"));
 
 }
 

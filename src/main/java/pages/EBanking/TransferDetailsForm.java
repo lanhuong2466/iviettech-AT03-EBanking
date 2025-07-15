@@ -19,19 +19,22 @@ public class TransferDetailsForm {
 
     @Step("Get transfer message from transfer details form")
     public String getTransferMessage() {
-        String transferMessage = webDriver.findElement(transferMessageTextboxLocator).getAttribute("value");
+        String transferMessage = webDriver.findElement(transferMessageTextboxLocator)
+                .getAttribute("value");
         return transferMessage;
     }
 
     @Step("Get transfer amount from transfer details form")
     public int getTransferAmount() {
-        int transferAmount = Integer.parseInt(webDriver.findElement(amountTextboxLocator).getAttribute("value").replace(",", ""));
+        int transferAmount = Integer.parseInt(webDriver.findElement(amountTextboxLocator)
+                .getAttribute("value").replace(",", ""));
         return transferAmount;
     }
 
     @Step("Get recipient account ID from transfer details form")
     public int getRecipientAccountId() {
-        int recipientAccountId = Integer.parseInt(webDriver.findElement(recipientAccountTextboxLocator).getAttribute("value"));
+        int recipientAccountId = Integer.parseInt(webDriver.findElement(recipientAccountTextboxLocator)
+                .getAttribute("value"));
         return recipientAccountId;
     }
 
@@ -52,15 +55,6 @@ public class TransferDetailsForm {
     public void selectSourceAccount(int accountId) {
         webDriver.findElement(sourceAccountComboboxLocator).click();
         webDriver.findElement(By.xpath(String.format("//li[text() = '%s']", accountId))).click();
-    }
-
-    @Step("Enter characters into the recipient account input field")
-    public int getRecipientAccount() {
-        String value = webDriver.findElement(recipientAccountTextboxLocator).getAttribute("value");
-        if (value == null || value.trim().isEmpty()) {
-            throw new IllegalArgumentException("Recipient account is missing or empty");
-        }
-        return Integer.parseInt(value);
     }
 
     @Step("Enter recipient account number")
