@@ -2,6 +2,7 @@ package pages.EBanking;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 
 public class TransferDetailsForm {
@@ -19,23 +20,26 @@ public class TransferDetailsForm {
 
     @Step("Get transfer message from transfer details form")
     public String getTransferMessage() {
-        String transferMessage = webDriver.findElement(transferMessageTextboxLocator)
-                .getAttribute("value");
-        return transferMessage;
+        // Using JavaScriptExecutor to get the value of the transfer message textbox
+        return (String) ((JavascriptExecutor) webDriver).executeScript(
+                "return arguments[0].value;", webDriver.findElement(transferMessageTextboxLocator));
     }
 
     @Step("Get transfer amount from transfer details form")
-    public int getTransferAmount() {
-        int transferAmount = Integer.parseInt(webDriver.findElement(amountTextboxLocator)
-                .getAttribute("value").replace(",", ""));
-        return transferAmount;
+    public double getTransferAmount() {
+        String amountValue = (String) ((JavascriptExecutor) webDriver)
+                .executeScript("return arguments[0].value;", webDriver.findElement(amountTextboxLocator));
+
+        double amount = Double.parseDouble(amountValue);
+        return amount;
     }
 
     @Step("Get recipient account ID from transfer details form")
     public int getRecipientAccountId() {
-        int recipientAccountId = Integer.parseInt(webDriver.findElement(recipientAccountTextboxLocator)
-                .getAttribute("value"));
-        return recipientAccountId;
+        String recipientId = (String) ((JavascriptExecutor) webDriver)
+                .executeScript("return arguments[0].value;", webDriver.findElement(recipientAccountTextboxLocator));
+
+        return Integer.parseInt(recipientId);
     }
 
     @Step("Get recipient account name from transfer details form")
@@ -47,8 +51,9 @@ public class TransferDetailsForm {
 
     @Step("Get source account ID from transfer details form")
     public int getSourceAccountId() {
-        int sourceAccountId = Integer.parseInt(webDriver.findElement(sourceAccountComboboxLocator).getText());
-        return sourceAccountId;
+        String sourceAcountId = webDriver.findElement(sourceAccountComboboxLocator).getText();
+
+        return Integer.parseInt(sourceAcountId);
     }
 
     @Step("Select source account")

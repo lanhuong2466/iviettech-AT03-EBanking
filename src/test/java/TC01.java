@@ -38,15 +38,6 @@ public class TC01 {
         softAssert.assertEquals(homePage.getAvailableBalance(),
                 beforeAvailableBalance, "So du kha dung khong dung");
 
-        transferDetailsForm.openTransferConfirmationForm();
-
-        //Kiểm tra hiển thị đúng thông tin chuyển tiền
-        // Tài khoản gửi, Số tiền chuyển khoản, Nội dung chuyển khoản,
-        // Tài khoản nhận, Tên chủ tài khoản, Hình thức nhận mã giao dịch
-
-        leftMenu.openTransferForm();
-        transferDetailsForm.selectSourceAccount(100001403);
-
         sourceAccountId = transferDetailsForm.getSourceAccountId();
         transferAmount = transferDetailsForm.getTransferAmount();
         transferMessage = transferDetailsForm.getTransferMessage();
@@ -54,6 +45,14 @@ public class TC01 {
         recipientName = transferDetailsForm.getRecipientName();
 
         transferDetailsForm.openTransferConfirmationForm();
+
+        //Kiểm tra hiển thị đúng thông tin chuyển tiền
+        // Tài khoản gửi, Số tiền chuyển khoản, Nội dung chuyển khoản,
+        // Tài khoản nhận, Tên chủ tài khoản, Hình thức nhận mã giao dịch
+
+//        leftMenu.openTransferForm();
+//        transferDetailsForm.selectSourceAccount(100001403);
+//
 
         softAssert.assertEquals(transferConfirmationForm.getSourceAccountId(),
                 sourceAccountId, "So tai khoan gui khong dung");

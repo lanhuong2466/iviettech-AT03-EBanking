@@ -1,5 +1,6 @@
 package tests;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -8,20 +9,14 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import pages.EBanking.*;
+import pages.Yopmail.EmailPage;
+import pages.Yopmail.HomeYopMailPage;
 import utils.Constants;
-import org.apache.commons.lang3.RandomStringUtils;
 
 import java.time.Duration;
 
 public class TC09 {
 
-    WebDriver webDriver;
-    SoftAssert softAssert;
-    LoginPage loginPage;
-    HomePage homePage;
-    LeftMenu leftMenu;
-    TransferDetailsForm transferDetailsForm;
-    String OTPCode;
 
     @Test(description = "Verify error message is displayed when entering incorrect OTP during fund transfer")
     public void VerifyErrorMessageIsDisplayedWhenEnteringIncorrectOTP() {
@@ -39,8 +34,8 @@ public class TC09 {
         );
 
         // Open transaction confirmation and OTP entry form
-        transferDetailsForm.openTransactionConfirmationForm();
-        homePage.openOTPEntryForm();
+        transferDetailsForm.openTransferConfirmationForm();
+        transferConfirmationForm.openOTPEntryForm();
 
         // Generate random invalid OTP (10 alphanumeric characters)
         OTPCode = RandomStringUtils.randomAlphanumeric(10);
@@ -49,10 +44,10 @@ public class TC09 {
         homePage.enterOTPCode(OTPCode);
 
         // Click transfer button WITHOUT waiting for success popup
-        homePage.clickTransferButtonWithoutWaitingSuccessPopup();
+        homePage.clickTransferButton();
 
         // Verify error popup displayed for invalid OTP
-        softAssert.assertTrue(homePage.isPopupFailOTPDisplayed(),
+        softAssert.assertTrue(homePage.isPopupErrorDisplayed(),
                 "Khong hien popup OTP khong dung");
 
         // Report all asserts
@@ -66,18 +61,35 @@ public class TC09 {
         webDriver = new ChromeDriver(options);
         webDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         webDriver.manage().window().maximize();
-
         softAssert = new SoftAssert();
         loginPage = new LoginPage(webDriver);
         homePage = new HomePage(webDriver);
+        homeYopMailPage = new HomeYopMailPage(webDriver);
+        emailPage = new EmailPage(webDriver);
         leftMenu = new LeftMenu(webDriver);
+        accountDetails = new AccountDetails(webDriver);
         transferDetailsForm = new TransferDetailsForm(webDriver);
-
+        transferConfirmationForm = new TransferConfirmationForm(webDriver);
         webDriver.get(Constants.EBANKING_URL);
+
     }
 
     @AfterMethod
     public void tearDown() {
         webDriver.quit();
     }
+
+    WebDriver webDriver;
+    SoftAssert softAssert;
+    LoginPage loginPage;
+    HomePage homePage;
+    HomeYopMailPage homeYopMailPage;
+    EmailPage emailPage;
+    LeftMenu leftMenu;
+    AccountDetails accountDetails;
+    TransferDetailsForm transferDetailsForm;
+    TransferConfirmationForm transferConfirmationForm;
+    double beforeAvailableBalance;
+    double afterAvailableBalance;
+    String OTPCode;
 }

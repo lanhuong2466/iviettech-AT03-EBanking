@@ -5,10 +5,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
-import pages.EBanking.AccountDetails;
-import pages.EBanking.HomePage;
-import pages.EBanking.LeftMenu;
-import pages.EBanking.LoginPage;
+import pages.EBanking.*;
 import pages.Yopmail.EmailPage;
 import pages.Yopmail.HomeYopMailPage;
 import utils.Constants;
@@ -23,23 +20,23 @@ public class TC07 {
 
         leftMenu.openAccountDetailForm();
         accountDetails.openAccountDetails(100001403);
-        int beforeAvailableBalance = accountDetails.getAvailableBalance();
+        beforeAvailableBalance = accountDetails.getAvailableBalance();
 
         leftMenu.openTransferForm();
 
-        homePage.enterTranferDetails(100001403,
+        transferDetailsForm.enterTransferDetails(100001403,
                 100001399,
                 12000,
                 "");
 
-        homePage.openTransactionConfirmationForm();
+        transferDetailsForm.openTransferConfirmationForm();
 
-        softAssert.assertTrue(homePage.isPopupInputContentDisplayed(), "Popup thông báo Nhập nội dung không hiển thị");
-        softAssert.assertEquals(homePage.getpopupInputContentText(), "Nhập nội dung", "Nội dung thông báo không đúng");
+        softAssert.assertTrue(homePage.isPopupErrorDisplayed(), "Popup thông báo Nhập nội dung không hiển thị");
+        softAssert.assertEquals(homePage.getpopupErrorText(), "Nhập nội dung", "Nội dung thông báo không đúng");
 
         leftMenu.openAccountDetailForm();
         accountDetails.openAccountDetails(100001403);
-        int afterAvailableBalance = accountDetails.getAvailableBalance();
+        afterAvailableBalance = accountDetails.getAvailableBalance();
 
         softAssert.assertEquals(beforeAvailableBalance,
                 afterAvailableBalance,
@@ -62,6 +59,8 @@ public class TC07 {
         emailPage = new EmailPage(webDriver);
         leftMenu = new LeftMenu(webDriver);
         accountDetails = new AccountDetails(webDriver);
+        transferDetailsForm = new TransferDetailsForm(webDriver);
+        transferConfirmationForm = new TransferConfirmationForm(webDriver);
         webDriver.get(Constants.EBANKING_URL);
 
     }
@@ -79,4 +78,9 @@ public class TC07 {
     EmailPage emailPage;
     LeftMenu leftMenu;
     AccountDetails accountDetails;
+    TransferDetailsForm transferDetailsForm;
+    TransferConfirmationForm transferConfirmationForm;
+    double beforeAvailableBalance;
+    double afterAvailableBalance;
+
 }

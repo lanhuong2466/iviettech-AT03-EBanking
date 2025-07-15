@@ -8,20 +8,13 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import pages.EBanking.*;
+import pages.Yopmail.EmailPage;
+import pages.Yopmail.HomeYopMailPage;
 import utils.Constants;
 
 import java.time.Duration;
 
 public class TC10 {
-
-    WebDriver webDriver;
-    SoftAssert softAssert;
-    LoginPage loginPage;
-    HomePage homePage;
-    LeftMenu leftMenu;
-    AccountDetails accountDetails;
-    TransferDetailsForm transferDetailsForm;
-    int beforeAvailableBalance;
 
     @Test(description = "Verify error message is displayed when transferring to the same account")
     public void VerifyErrorMessageIsDisplayedWhenTransferringToSameAccount() {
@@ -44,16 +37,16 @@ public class TC10 {
         );
 
         // Attempt to open transaction confirmation
-        transferDetailsForm.openTransactionConfirmationForm();
+        transferDetailsForm.openTransferConfirmationForm();
 
         // Verify popup error displayed for transferring to same account
-        softAssert.assertTrue(homePage.isPopupSameAccountTransferDisplayed(),
+        softAssert.assertTrue(homePage.isPopupErrorDisplayed(),
                 "Không hiển thị popup lỗi khi chuyển cùng số tài khoản");
 
         // Verify available balance is unchanged
         leftMenu.openAccountDetailForm();
         accountDetails.openAccountDetails(100001403);
-        int afterAvailableBalance = accountDetails.getAvailableBalance();
+        afterAvailableBalance = accountDetails.getAvailableBalance();
 
         softAssert.assertEquals(beforeAvailableBalance,
                 afterAvailableBalance,
@@ -70,19 +63,34 @@ public class TC10 {
         webDriver = new ChromeDriver(options);
         webDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         webDriver.manage().window().maximize();
-
         softAssert = new SoftAssert();
         loginPage = new LoginPage(webDriver);
         homePage = new HomePage(webDriver);
+        homeYopMailPage = new HomeYopMailPage(webDriver);
+        emailPage = new EmailPage(webDriver);
         leftMenu = new LeftMenu(webDriver);
         accountDetails = new AccountDetails(webDriver);
         transferDetailsForm = new TransferDetailsForm(webDriver);
-
+        transferConfirmationForm = new TransferConfirmationForm(webDriver);
         webDriver.get(Constants.EBANKING_URL);
+
     }
 
     @AfterMethod
     public void tearDown() {
         webDriver.quit();
     }
+
+    WebDriver webDriver;
+    SoftAssert softAssert;
+    LoginPage loginPage;
+    HomePage homePage;
+    HomeYopMailPage homeYopMailPage;
+    EmailPage emailPage;
+    LeftMenu leftMenu;
+    AccountDetails accountDetails;
+    TransferDetailsForm transferDetailsForm;
+    TransferConfirmationForm transferConfirmationForm;
+    double beforeAvailableBalance;
+    double afterAvailableBalance;
 }

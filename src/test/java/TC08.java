@@ -1,5 +1,6 @@
 package tests;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -8,19 +9,13 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import pages.EBanking.*;
+import pages.Yopmail.EmailPage;
+import pages.Yopmail.HomeYopMailPage;
 import utils.Constants;
-import org.apache.commons.lang3.RandomStringUtils;
 
 import java.time.Duration;
 
 public class TC08 {
-
-    WebDriver webDriver;
-    SoftAssert softAssert;
-    LoginPage loginPage;
-    HomePage homePage;
-    LeftMenu leftMenu;
-    AccountDetails accountDetails;
 
     @Test
     public void VerifyErrorMessageIsDisplayedWhenTransferringWithContentOver100Chars() {
@@ -34,12 +29,12 @@ public class TC08 {
         // Get available balance before transfer
         leftMenu.openAccountDetailForm();
         accountDetails.openAccountDetails(100001403);
-        int beforeAvailableBalance = accountDetails.getAvailableBalance();
+        beforeAvailableBalance = accountDetails.getAvailableBalance();
 
         // Open transfer form and enter transfer details with long content
         leftMenu.openTransferForm();
 
-        homePage.enterTranferDetails(
+        transferDetailsForm.enterTransferDetails(
                 100001403,   // Source account
                 100001399,   // Destination account
                 12000,       // Amount
@@ -47,21 +42,21 @@ public class TC08 {
         );
 
         // Attempt to open transaction confirmation
-        homePage.openTransactionConfirmationForm();
+        transferDetailsForm.openTransferConfirmationForm();
 
         // Verify popup error is displayed
-        softAssert.assertTrue(homePage.isPopupInputContent100CharacterDisplayed(),
+        softAssert.assertTrue(homePage.isPopupErrorDisplayed(),
                 "Popup thông báo nội dung vượt quá 100 ký tự không hiển thị");
 
         // Verify popup error text
-        softAssert.assertEquals(homePage.getpopupInputContent100CharacterText(),
+        softAssert.assertEquals(homePage.getpopupErrorText(),
                 "size must be between 0 and 100",
                 "Nội dung thông báo không đúng");
 
         // Verify available balance is unchanged
         leftMenu.openAccountDetailForm();
         accountDetails.openAccountDetails(100001403);
-        int afterAvailableBalance = accountDetails.getAvailableBalance();
+        afterAvailableBalance = accountDetails.getAvailableBalance();
 
         softAssert.assertEquals(beforeAvailableBalance,
                 afterAvailableBalance,
@@ -78,22 +73,34 @@ public class TC08 {
         webDriver = new ChromeDriver(options);
         webDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         webDriver.manage().window().maximize();
-
-        // Initialize SoftAssert
         softAssert = new SoftAssert();
-
-        // Initialize Page Objects
         loginPage = new LoginPage(webDriver);
         homePage = new HomePage(webDriver);
+        homeYopMailPage = new HomeYopMailPage(webDriver);
+        emailPage = new EmailPage(webDriver);
         leftMenu = new LeftMenu(webDriver);
         accountDetails = new AccountDetails(webDriver);
-
-        // Open EBANKING_URL
+        transferDetailsForm = new TransferDetailsForm(webDriver);
+        transferConfirmationForm = new TransferConfirmationForm(webDriver);
         webDriver.get(Constants.EBANKING_URL);
+
     }
 
     @AfterMethod
     public void tearDown() {
         webDriver.quit();
     }
+
+    WebDriver webDriver;
+    SoftAssert softAssert;
+    LoginPage loginPage;
+    HomePage homePage;
+    HomeYopMailPage homeYopMailPage;
+    EmailPage emailPage;
+    LeftMenu leftMenu;
+    AccountDetails accountDetails;
+    TransferDetailsForm transferDetailsForm;
+    TransferConfirmationForm transferConfirmationForm;
+    double beforeAvailableBalance;
+    double afterAvailableBalance;
 }
