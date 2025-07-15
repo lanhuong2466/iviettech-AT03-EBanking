@@ -41,10 +41,10 @@ public class TC09 {
         OTPCode = RandomStringUtils.randomAlphanumeric(10);
 
         // Enter invalid OTP
-        homePage.enterOTPCode(OTPCode);
+        otpEntryForm.enterOTPCode(OTPCode);
 
         // Click transfer button WITHOUT waiting for success popup
-        homePage.clickTransferButton();
+        otpEntryForm.clickTransferButton();
 
         // Verify error popup displayed for invalid OTP
         softAssert.assertTrue(homePage.isPopupErrorDisplayed(),
@@ -70,6 +70,7 @@ public class TC09 {
         accountDetails = new AccountDetails(webDriver);
         transferDetailsForm = new TransferDetailsForm(webDriver);
         transferConfirmationForm = new TransferConfirmationForm(webDriver);
+        otpEntryForm = new OTPEntryForm(webDriver);
         webDriver.get(Constants.EBANKING_URL);
 
     }
@@ -89,6 +90,7 @@ public class TC09 {
     AccountDetails accountDetails;
     TransferDetailsForm transferDetailsForm;
     TransferConfirmationForm transferConfirmationForm;
+    OTPEntryForm otpEntryForm;
     double beforeAvailableBalance;
     double afterAvailableBalance;
     String OTPCode;

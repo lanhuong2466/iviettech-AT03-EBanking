@@ -93,11 +93,11 @@ public class TC01 {
         webDriver.close();
         webDriver.switchTo().window(originalWindow);
 
-        homePage.enterOTPCode(OTPCode);
+        otpEntryForm.enterOTPCode(OTPCode);
 
-        homePage.clickTransferButton();
+        otpEntryForm.clickTransferButton();
 
-        softAssert.assertTrue(homePage.isTransferSuccessPopupDisplayed(),
+        softAssert.assertTrue(otpEntryForm.isTransferSuccessPopupDisplayed(),
                 "Khong hien popup chuyen khoan thanh cong");
 
         homePage.closeTheNotificationPopup();
@@ -129,6 +129,7 @@ public class TC01 {
         accountDetails = new AccountDetails(webDriver);
         transferDetailsForm = new TransferDetailsForm(webDriver);
         transferConfirmationForm = new TransferConfirmationForm(webDriver);
+        otpEntryForm = new OTPEntryForm(webDriver);
         webDriver.get(Constants.EBANKING_URL);
 
     }
@@ -148,6 +149,7 @@ public class TC01 {
     AccountDetails accountDetails;
     TransferDetailsForm transferDetailsForm;
     TransferConfirmationForm transferConfirmationForm;
+    OTPEntryForm otpEntryForm;
     double beforeAvailableBalance;
     double afterAvailableBalance;
     String originalWindow;

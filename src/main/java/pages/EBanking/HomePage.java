@@ -11,11 +11,7 @@ import java.time.Duration;
 public class HomePage {
     private WebDriver webDriver;
     final private By confirmButtonLocator = By.name("j_idt23:j_idt44");
-    final private By OTPTextboxLocator = By.name("j_idt23:j_idt46");
-    final private By tranferButtonLocator = By.name("j_idt23:j_idt48");
     final private By availableBalanceLocator = By.id("j_idt23:amount");
-    final private By popupTransferSuccessLocator = By.xpath(
-            "//*[@id = 'primefacesmessagedlg']//div[text() = 'Chuyển tiền thành công']");
     final private By popupErrorLocator = By.xpath("//span[@class = 'ui-growl-title']");
     final private By popupCloseButtonLocator = By.xpath("//*[@id = 'primefacesmessagedlg']//a");
 
@@ -50,30 +46,6 @@ public class HomePage {
         double balance = Double.parseDouble(webDriver.findElement(availableBalanceLocator).
                 getText().replace(" VNĐ", "").replace(",", ""));
         return balance;
-    }
-
-    @Step("Click transfer button")
-    public void clickTransferButton() {
-        webDriver.findElement(tranferButtonLocator).click();
-        WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(popupTransferSuccessLocator));
-    }
-
-    @Step("Enter OTP code")
-    public void enterOTPCode(String otp) {
-        webDriver.findElement(OTPTextboxLocator).sendKeys(otp);
-    }
-
-
-    @Step("Verify transfer success popup is displayed")
-    public boolean isTransferSuccessPopupDisplayed() {
-        WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(5));
-        try {
-            wait.until(driver -> driver.findElement(popupTransferSuccessLocator).isDisplayed());
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
     }
 
     public HomePage(WebDriver webDriver) {
