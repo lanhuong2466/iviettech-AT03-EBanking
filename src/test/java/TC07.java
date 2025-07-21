@@ -18,24 +18,25 @@ public class TC07 {
     public void VerifyErrorMessageIsDisplayedWhenTransferringWithNoContent() {
         loginPage.Login(Constants.USERNAME, Constants.PASSWORD);
 
-        leftMenu.openAccountDetailForm();
-        accountDetails.openAccountDetails(100001403);
+        leftMenu.openAccountForm();
+        sourceAccountId = 100001403;
+        accountsPage.openAccountDetailsForm(sourceAccountId);
         beforeAvailableBalance = accountDetails.getAvailableBalance();
 
         leftMenu.openTransferForm();
 
-        transferDetailsForm.enterTransferDetails(100001403,
+        transferDetailsPage.enterTransferDetails(sourceAccountId,
                 100001399,
                 12000,
                 "");
 
-        transferDetailsForm.openTransferConfirmationForm();
+        transferDetailsPage.openTransferConfirmationForm();
 
         softAssert.assertTrue(homePage.isPopupErrorDisplayed(), "Popup thông báo Nhập nội dung không hiển thị");
         softAssert.assertEquals(homePage.getpopupErrorText(), "Nhập nội dung", "Nội dung thông báo không đúng");
 
-        leftMenu.openAccountDetailForm();
-        accountDetails.openAccountDetails(100001403);
+        leftMenu.openAccountForm();
+        accountsPage.openAccountDetailsForm(sourceAccountId);
         afterAvailableBalance = accountDetails.getAvailableBalance();
 
         softAssert.assertEquals(beforeAvailableBalance,
@@ -58,9 +59,10 @@ public class TC07 {
         homeYopMailPage = new HomeYopMailPage(webDriver);
         emailPage = new EmailPage(webDriver);
         leftMenu = new LeftMenu(webDriver);
-        accountDetails = new AccountDetails(webDriver);
-        transferDetailsForm = new TransferDetailsForm(webDriver);
-        transferConfirmationForm = new TransferConfirmationForm(webDriver);
+        accountsPage = new AccountsPage(webDriver);
+        accountDetails = new AccountDetailsPage(webDriver);
+        transferDetailsPage = new TransferDetailsPage(webDriver);
+        transferConfirmationPage = new TransferConfirmationPage(webDriver);
         webDriver.get(Constants.EBANKING_URL);
 
     }
@@ -77,10 +79,12 @@ public class TC07 {
     HomeYopMailPage homeYopMailPage;
     EmailPage emailPage;
     LeftMenu leftMenu;
-    AccountDetails accountDetails;
-    TransferDetailsForm transferDetailsForm;
-    TransferConfirmationForm transferConfirmationForm;
-    double beforeAvailableBalance;
-    double afterAvailableBalance;
+    AccountsPage accountsPage;
+    AccountDetailsPage accountDetails;
+    TransferDetailsPage transferDetailsPage;
+    TransferConfirmationPage transferConfirmationPage;
+    int beforeAvailableBalance;
+    int afterAvailableBalance;
+    int sourceAccountId;
 
 }

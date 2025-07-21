@@ -10,7 +10,6 @@ import java.time.Duration;
 
 public class HomePage {
     private WebDriver webDriver;
-    final private By confirmButtonLocator = By.name("j_idt23:j_idt44");
     final private By availableBalanceLocator = By.id("j_idt23:amount");
     final private By popupErrorLocator = By.xpath("//span[@class = 'ui-growl-title']");
     final private By popupCloseButtonLocator = By.xpath("//*[@id = 'primefacesmessagedlg']//a");
@@ -42,8 +41,8 @@ public class HomePage {
     }
 
     @Step("Get available balance")
-    public double getAvailableBalance() {
-        double balance = Double.parseDouble(webDriver.findElement(availableBalanceLocator).
+    public int getAvailableBalance() {
+        int balance = Integer.parseInt(webDriver.findElement(availableBalanceLocator).
                 getText().replace(" VNĐ", "").replace(",", ""));
         return balance;
     }

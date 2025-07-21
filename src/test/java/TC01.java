@@ -1,3 +1,4 @@
+import org.apache.commons.lang3.RandomUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -18,64 +19,67 @@ public class TC01 {
     @Test(description = "Verify successful transfer between two accounts within the same bank")
     public void VerifySuccessfulFundTransferBetweenTwoAccountsWithinTheSameBank() {
 
+        loginAdminPage.loginAdminAccount(Constants.ADMIN_USERNAME, Constants.ADMIN_PASSWORD);
+
+        adminHomePage.openDepositMoneyForm();
+
+        adminHomePage.depositMoneyIntoABankAccount(100001403,
+                1000000, "Nap tien vao tai khoan 100001399");
+
+
+        webDriver.get(Constants.EBANKING_URL);
         loginPage.Login(Constants.USERNAME, Constants.PASSWORD);
 
-        // Mở trang chi tiết tài khoản để lấy số dư khả dụng trước khi chuyển tiền
-        leftMenu.openAccountDetailForm();
-        accountDetails.openAccountDetails(100001403);
-        beforeAvailableBalance = accountDetails.getAvailableBalance();
 
-        // Mở form chuyển tiền
+        leftMenu.openAccountForm();
+
+        sourceAccountId = 100001403;
+        accountsPage.openAccountDetailsForm(sourceAccountId);
+        beforeAvailableBalance = accountDetailsPage.getAvailableBalance();
+
         leftMenu.openTransferForm();
 
-        //lấy số dư rồi trừ thuế tùm lum rồi ra số tiền chuyển
-        amount = 12000.0;
-        transferDetailsForm.enterTransferDetails(100001403,
+        amount = RandomUtils.nextInt(0, beforeAvailableBalance - 1100);
+        transferDetailsPage.enterTransferDetails(sourceAccountId,
                 100001399, amount,
-                "Huong chuyen khoan 12000 dong");
+                "Huong chuyen tien");
 
-        // Kiểm tra hiển thị đúng số dư khả dụng
+
         softAssert.assertEquals(homePage.getAvailableBalance(),
                 beforeAvailableBalance, "So du kha dung khong dung");
 
-        sourceAccountId = transferDetailsForm.getSourceAccountId();
-        transferAmount = transferDetailsForm.getTransferAmount();
-        transferMessage = transferDetailsForm.getTransferMessage();
-        recipientAccountId = transferDetailsForm.getRecipientAccountId();
-        recipientName = transferDetailsForm.getRecipientName();
+//        sourceAccountId = transferDetailsForm.getSourceAccountId();
+        transferAmount = transferDetailsPage.getTransferAmount();
+        transferMessage = transferDetailsPage.getTransferMessage();
+        recipientAccountId = transferDetailsPage.getRecipientAccountId();
+        recipientName = transferDetailsPage.getRecipientName();
 
-        transferDetailsForm.openTransferConfirmationForm();
+        transferDetailsPage.openTransferConfirmationForm();
 
         //Kiểm tra hiển thị đúng thông tin chuyển tiền
-        // Tài khoản gửi, Số tiền chuyển khoản, Nội dung chuyển khoản,
-        // Tài khoản nhận, Tên chủ tài khoản, Hình thức nhận mã giao dịch
 
-//        leftMenu.openTransferForm();
-//        transferDetailsForm.selectSourceAccount(100001403);
-//
-
-        softAssert.assertEquals(transferConfirmationForm.getSourceAccountId(),
+        softAssert.assertEquals(transferConfirmationPage.getSourceAccountId(),
                 sourceAccountId, "So tai khoan gui khong dung");
 
-        softAssert.assertEquals(transferConfirmationForm.getTransferAmount(),
-                transferAmount, "So tien chuyen khoan khong dung");
+        softAssert.assertTrue(transferConfirmationPage.getTransferAmount() -
+                transferAmount < epsilon, "So tien chuyen khoan khong dung");
 
-        softAssert.assertEquals(transferConfirmationForm.getTransferMessage(),
+        softAssert.assertEquals(transferConfirmationPage.getTransferMessage(),
                 transferMessage, "Noi dung chuyen khoan khong dung");
 
-        softAssert.assertEquals(transferConfirmationForm.getRecipientAccountId(),
+        softAssert.assertEquals(transferConfirmationPage.getRecipientAccountId(),
                 recipientAccountId, "So tai khoan nhan khong dung");
 
-        softAssert.assertEquals(transferConfirmationForm.getRecipientName(),
+        softAssert.assertEquals(transferConfirmationPage.getRecipientName(),
                 recipientName, "Ten nguoi nhan khong dung");
 
-        softAssert.assertEquals(transferConfirmationForm.getReceiveOTPViaEmailText(),
+        softAssert.assertEquals(transferConfirmationPage.getReceiveOTPViaEmailText(),
                 "Nhận qua Email", "Hinh thuc nhan ma OTP khong dung");
 
 
-        transferConfirmationForm.openOTPEntryForm();
+        transferConfirmationPage.openOTPEntryForm();
 
-        // Chuyển sang tab Yopmail để lấy mã OTP
+
         originalWindow = webDriver.getWindowHandle();
         webDriver.switchTo().newWindow(org.openqa.selenium.WindowType.TAB);
         WindowSwitcher.switchToNewWindow(webDriver, originalWindow);
@@ -89,25 +93,23 @@ public class TC01 {
         emailPage.openFirstMail();
         OTPCode = emailPage.getOTPCode();
 
-        // Quay lại tab EBanking để nhập mã OTP
+
         webDriver.close();
         webDriver.switchTo().window(originalWindow);
 
-        otpEntryForm.enterOTPCode(OTPCode);
+        otpEntryPage.submitOTPCode(OTPCode);
 
-        otpEntryForm.clickTransferButton();
-
-        softAssert.assertTrue(otpEntryForm.isTransferSuccessPopupDisplayed(),
+        softAssert.assertTrue(otpEntryPage.isTransferSuccessPopupDisplayed(),
                 "Khong hien popup chuyen khoan thanh cong");
 
         homePage.closeTheNotificationPopup();
 
-        leftMenu.openAccountDetailForm();
-        accountDetails.openAccountDetails(100001403);
-        afterAvailableBalance = accountDetails.getAvailableBalance();
+        leftMenu.openAccountForm();
+        accountsPage.openAccountDetailsForm(sourceAccountId);
+        afterAvailableBalance = accountDetailsPage.getAvailableBalance();
 
 
-        softAssert.assertEquals(afterAvailableBalance, (beforeAvailableBalance - amount - 1100),
+        softAssert.assertTrue(afterAvailableBalance - (beforeAvailableBalance - amount - 1100) < epsilon,
                 "So du kha dung khong dung sau khi chuyen khoan thanh cong");
 
         softAssert.assertAll();
@@ -121,16 +123,19 @@ public class TC01 {
         webDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         webDriver.manage().window().maximize();
         softAssert = new SoftAssert();
+        loginAdminPage = new LoginAdminPage(webDriver);
+        adminHomePage = new AdminHomePage(webDriver);
         loginPage = new LoginPage(webDriver);
         homePage = new HomePage(webDriver);
         homeYopMailPage = new HomeYopMailPage(webDriver);
         emailPage = new EmailPage(webDriver);
         leftMenu = new LeftMenu(webDriver);
-        accountDetails = new AccountDetails(webDriver);
-        transferDetailsForm = new TransferDetailsForm(webDriver);
-        transferConfirmationForm = new TransferConfirmationForm(webDriver);
-        otpEntryForm = new OTPEntryForm(webDriver);
-        webDriver.get(Constants.EBANKING_URL);
+        accountsPage = new AccountsPage(webDriver);
+        accountDetailsPage = new AccountDetailsPage(webDriver);
+        transferDetailsPage = new TransferDetailsPage(webDriver);
+        transferConfirmationPage = new TransferConfirmationPage(webDriver);
+        otpEntryPage = new OTPEntryPage(webDriver);
+        webDriver.get(Constants.ADMIN_EBANKING_URL);
 
     }
 
@@ -141,40 +146,31 @@ public class TC01 {
 
     WebDriver webDriver;
     SoftAssert softAssert;
+    LoginAdminPage loginAdminPage;
+    AdminHomePage adminHomePage;
     LoginPage loginPage;
     HomePage homePage;
     HomeYopMailPage homeYopMailPage;
     EmailPage emailPage;
     LeftMenu leftMenu;
-    AccountDetails accountDetails;
-    TransferDetailsForm transferDetailsForm;
-    TransferConfirmationForm transferConfirmationForm;
-    OTPEntryForm otpEntryForm;
-    double beforeAvailableBalance;
-    double afterAvailableBalance;
+    AccountsPage accountsPage;
+    AccountDetailsPage accountDetailsPage;
+    TransferDetailsPage transferDetailsPage;
+    TransferConfirmationPage transferConfirmationPage;
+    OTPEntryPage otpEntryPage;
+    int beforeAvailableBalance;
+    int afterAvailableBalance;
     String originalWindow;
     String OTPCode;
-    double amount;
+    int amount;
     int sourceAccountId;
-    double transferAmount;
+    int transferAmount;
     String transferMessage;
     int recipientAccountId;
     String recipientName;
+    double epsilon = 0.0001;
 
-// pages chia lam 2: ebanking va yopmail,
-    // leftmmenu taoj thanhf 1 page rieng biet
-    //khong dung if-else trong tcs
-    // thread.sleep() khong nen dung trong test case, chi dung trong test case nao can thiet
-    //@step, allure step
-
-    //click nút xác nận 2,3 lần
-    // refresh trang ma otp
-
-    //c1: tạo 1 tài khoản mới luôn
-    //c2: vào tài khoản ở leftmenu rồi bốc 1 tài khoản bất kỳ ra để test
-    //tách thêm 1 page là entryOTPForm
 
     //((JavaScriptExecutor) webDriver).executeScript("return arguments[0].value"));
 
 }
-

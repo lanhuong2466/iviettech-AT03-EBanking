@@ -19,12 +19,13 @@ public class TC03 {
 
         leftMenu.openTransferForm();
 
-        transferDetailsForm.enterRecipientAccount(100001399);
-        transferDetailsForm.enterAmount(12000);
-        transferDetailsForm.enterPaymentContent("Huong chuyen khoan 12000 dong");
-        transferDetailsForm.openTransferConfirmationForm();
+        transferDetailsPage.enterRecipientAccount(100001399);
+        transferDetailsPage.enterAmount(12000);
+        transferDetailsPage.enterPaymentContent("Huong chuyen khoan 12000 dong");
+        transferDetailsPage.openTransferConfirmationForm();
 
-        softAssert.assertTrue(homePage.isPopupSelectAnAccountDisplayed(), "Popup Mời chọn tài khoản không hiển thị");
+        softAssert.assertTrue(homePage.isPopupSelectAnAccountDisplayed(),
+                "Popup Mời chọn tài khoản không hiển thị");
 
         softAssert.assertAll();
     }
@@ -42,8 +43,9 @@ public class TC03 {
         homeYopMailPage = new HomeYopMailPage(webDriver);
         emailPage = new EmailPage(webDriver);
         leftMenu = new LeftMenu(webDriver);
-        transferDetailsForm = new TransferDetailsForm(webDriver);
-        accountDetails = new AccountDetails(webDriver);
+//        accountsForm = new AccountsForm(webDriver);
+        transferDetailsPage = new TransferDetailsPage(webDriver);
+        accountDetails = new AccountDetailsPage(webDriver);
         webDriver.get(Constants.EBANKING_URL);
 
     }
@@ -60,7 +62,8 @@ public class TC03 {
     HomeYopMailPage homeYopMailPage;
     EmailPage emailPage;
     LeftMenu leftMenu;
-    AccountDetails accountDetails;
-    TransferDetailsForm transferDetailsForm;
+    AccountsPage accountsPage;
+    AccountDetailsPage accountDetails;
+    TransferDetailsPage transferDetailsPage;
 
 }

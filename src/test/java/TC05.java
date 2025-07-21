@@ -18,26 +18,27 @@ public class TC05 {
     public void VerifyErrorMessageIsDisplayedWhenTransferringANegativeAmount() {
         loginPage.Login(Constants.USERNAME, Constants.PASSWORD);
 
-        leftMenu.openAccountDetailForm();
-        accountDetails.openAccountDetails(100001403);
+        leftMenu.openAccountForm();
+        sourceAccountId = 100001403;
+        accountsPage.openAccountDetailsForm(sourceAccountId);
         beforeAvailableBalance = accountDetails.getAvailableBalance();
 
         leftMenu.openTransferForm();
 
-        transferDetailsForm.enterTransferDetails(100001403,
+        transferDetailsPage.enterTransferDetails(sourceAccountId,
                 100001399,
                 -12000,
                 "Huong chuyen khoan 12000 dong");
 
-        transferDetailsForm.openTransferConfirmationForm();
+        transferDetailsPage.openTransferConfirmationForm();
 
         softAssert.assertTrue(homePage.isPopupErrorDisplayed(),
                 "Popup thông báo số tiền chuyển khoản không hợp lệ không hiển thị");
         softAssert.assertEquals(homePage.getpopupErrorText(),
                 "Negative amount is not allowed for transfer.", "Nội dung thông báo không đúng");
 
-        leftMenu.openAccountDetailForm();
-        accountDetails.openAccountDetails(100001403);
+        leftMenu.openAccountForm();
+        accountsPage.openAccountDetailsForm(sourceAccountId);
         afterAvailableBalance = accountDetails.getAvailableBalance();
 
         softAssert.assertEquals(beforeAvailableBalance,
@@ -60,8 +61,9 @@ public class TC05 {
         homeYopMailPage = new HomeYopMailPage(webDriver);
         emailPage = new EmailPage(webDriver);
         leftMenu = new LeftMenu(webDriver);
-        accountDetails = new AccountDetails(webDriver);
-        transferDetailsForm = new TransferDetailsForm(webDriver);
+        accountsPage = new AccountsPage(webDriver);
+        accountDetails = new AccountDetailsPage(webDriver);
+        transferDetailsPage = new TransferDetailsPage(webDriver);
         webDriver.get(Constants.EBANKING_URL);
 
     }
@@ -78,8 +80,10 @@ public class TC05 {
     HomeYopMailPage homeYopMailPage;
     EmailPage emailPage;
     LeftMenu leftMenu;
-    AccountDetails accountDetails;
-    TransferDetailsForm transferDetailsForm;
-    double beforeAvailableBalance;
-    double afterAvailableBalance;
+    AccountsPage accountsPage;
+    AccountDetailsPage accountDetails;
+    TransferDetailsPage transferDetailsPage;
+    int beforeAvailableBalance;
+    int afterAvailableBalance;
+    int sourceAccountId;
 }

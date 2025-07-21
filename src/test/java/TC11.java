@@ -19,25 +19,26 @@ public class TC11 {
 
         loginPage.Login(Constants.USERNAME, Constants.PASSWORD);
 
-        leftMenu.openAccountDetailForm();
-        accountDetails.openAccountDetails(100001403);
+        leftMenu.openAccountForm();
+        sourceAccountId = 100001394;
+        accountsPage.openAccountDetailsForm(sourceAccountId);
         beforeAvailableBalance = accountDetails.getAvailableBalance();
 
         leftMenu.openTransferForm();
 
-        transferDetailsForm.selectSourceAccount(100001403);
-        transferDetailsForm.enterRecipientAccount(100001394);
-        transferDetailsForm.enterAmount("Hello VietNam");
-        transferDetailsForm.enterPaymentContent("Huong chuyen khoan 12000 dong");
+        transferDetailsPage.selectSourceAccount(sourceAccountId);
+        transferDetailsPage.enterRecipientAccount(100001394);
+        transferDetailsPage.enterAmount("Hello VietNam");
+        transferDetailsPage.enterPaymentContent("Huong chuyen khoan 12000 dong");
 
-        transferDetailsForm.openTransferConfirmationForm();
+        transferDetailsPage.openTransferConfirmationForm();
 
         softAssert.assertEquals(homePage.getpopupErrorText(),
                 "Amount must be a postive number.",
                 "Nội dung thông báo không đúng");
 
-        leftMenu.openAccountDetailForm();
-        accountDetails.openAccountDetails(100001403);
+        leftMenu.openAccountForm();
+        accountsPage.openAccountDetailsForm(sourceAccountId);
 
         afterAvailableBalance = accountDetails.getAvailableBalance();
 
@@ -60,9 +61,10 @@ public class TC11 {
         homeYopMailPage = new HomeYopMailPage(webDriver);
         emailPage = new EmailPage(webDriver);
         leftMenu = new LeftMenu(webDriver);
-        accountDetails = new AccountDetails(webDriver);
-        transferDetailsForm = new TransferDetailsForm(webDriver);
-        transferConfirmationForm = new TransferConfirmationForm(webDriver);
+        accountsPage = new AccountsPage(webDriver);
+        accountDetails = new AccountDetailsPage(webDriver);
+        transferDetailsPage = new TransferDetailsPage(webDriver);
+        transferConfirmationPage = new TransferConfirmationPage(webDriver);
         webDriver.get(Constants.EBANKING_URL);
 
     }
@@ -79,9 +81,11 @@ public class TC11 {
     HomeYopMailPage homeYopMailPage;
     EmailPage emailPage;
     LeftMenu leftMenu;
-    AccountDetails accountDetails;
-    TransferDetailsForm transferDetailsForm;
-    TransferConfirmationForm transferConfirmationForm;
-    double beforeAvailableBalance;
-    double afterAvailableBalance;
+    AccountsPage accountsPage;
+    AccountDetailsPage accountDetails;
+    TransferDetailsPage transferDetailsPage;
+    TransferConfirmationPage transferConfirmationPage;
+    int beforeAvailableBalance;
+    int afterAvailableBalance;
+    int sourceAccountId;
 }

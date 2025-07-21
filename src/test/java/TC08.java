@@ -27,22 +27,23 @@ public class TC08 {
         String longContent = RandomStringUtils.randomAlphabetic(101);
 
         // Get available balance before transfer
-        leftMenu.openAccountDetailForm();
-        accountDetails.openAccountDetails(100001403);
+        leftMenu.openAccountForm();
+        sourceAccountId = 100001403; // Use a specific account ID for testing
+        accountsPage.openAccountDetailsForm(sourceAccountId);
         beforeAvailableBalance = accountDetails.getAvailableBalance();
 
         // Open transfer form and enter transfer details with long content
         leftMenu.openTransferForm();
 
-        transferDetailsForm.enterTransferDetails(
-                100001403,   // Source account
+        transferDetailsPage.enterTransferDetails(
+                sourceAccountId,   // Source account
                 100001399,   // Destination account
                 12000,       // Amount
                 longContent  // Content over 100 characters
         );
 
         // Attempt to open transaction confirmation
-        transferDetailsForm.openTransferConfirmationForm();
+        transferDetailsPage.openTransferConfirmationForm();
 
         // Verify popup error is displayed
         softAssert.assertTrue(homePage.isPopupErrorDisplayed(),
@@ -54,8 +55,8 @@ public class TC08 {
                 "Nội dung thông báo không đúng");
 
         // Verify available balance is unchanged
-        leftMenu.openAccountDetailForm();
-        accountDetails.openAccountDetails(100001403);
+        leftMenu.openAccountForm();
+        accountsPage.openAccountDetailsForm(sourceAccountId);
         afterAvailableBalance = accountDetails.getAvailableBalance();
 
         softAssert.assertEquals(beforeAvailableBalance,
@@ -79,9 +80,10 @@ public class TC08 {
         homeYopMailPage = new HomeYopMailPage(webDriver);
         emailPage = new EmailPage(webDriver);
         leftMenu = new LeftMenu(webDriver);
-        accountDetails = new AccountDetails(webDriver);
-        transferDetailsForm = new TransferDetailsForm(webDriver);
-        transferConfirmationForm = new TransferConfirmationForm(webDriver);
+        accountsPage = new AccountsPage(webDriver);
+        accountDetails = new AccountDetailsPage(webDriver);
+        transferDetailsPage = new TransferDetailsPage(webDriver);
+        transferConfirmationPage = new TransferConfirmationPage(webDriver);
         webDriver.get(Constants.EBANKING_URL);
 
     }
@@ -98,9 +100,11 @@ public class TC08 {
     HomeYopMailPage homeYopMailPage;
     EmailPage emailPage;
     LeftMenu leftMenu;
-    AccountDetails accountDetails;
-    TransferDetailsForm transferDetailsForm;
-    TransferConfirmationForm transferConfirmationForm;
-    double beforeAvailableBalance;
-    double afterAvailableBalance;
+    AccountsPage accountsPage;
+    AccountDetailsPage accountDetails;
+    TransferDetailsPage transferDetailsPage;
+    TransferConfirmationPage transferConfirmationPage;
+    int beforeAvailableBalance;
+    int afterAvailableBalance;
+    int sourceAccountId;
 }

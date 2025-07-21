@@ -24,27 +24,32 @@ public class TC09 {
         // Login
         loginPage.Login(Constants.USERNAME, Constants.PASSWORD);
 
+        leftMenu.openAccountForm();
+        sourceAccountId = 100001403;
+        accountsPage.openAccountDetailsForm(sourceAccountId);
+        beforeAvailableBalance = accountDetails.getAvailableBalance();
+
         // Open transfer form and enter transfer details
         leftMenu.openTransferForm();
-        transferDetailsForm.enterTransferDetails(
-                100001403,   // Source account
+        transferDetailsPage.enterTransferDetails(
+                sourceAccountId,   // Source account
                 100001399,   // Destination account
                 12000,       // Amount
                 "Test chuyen khoan voi OTP sai"
         );
 
         // Open transaction confirmation and OTP entry form
-        transferDetailsForm.openTransferConfirmationForm();
-        transferConfirmationForm.openOTPEntryForm();
+        transferDetailsPage.openTransferConfirmationForm();
+        transferConfirmationPage.openOTPEntryForm();
 
         // Generate random invalid OTP (10 alphanumeric characters)
         OTPCode = RandomStringUtils.randomAlphanumeric(10);
 
         // Enter invalid OTP
-        otpEntryForm.enterOTPCode(OTPCode);
+        otpEntryPage.enterOTPCode(OTPCode);
 
         // Click transfer button WITHOUT waiting for success popup
-        otpEntryForm.clickTransferButton();
+        otpEntryPage.clickTransferButton();
 
         // Verify error popup displayed for invalid OTP
         softAssert.assertTrue(homePage.isPopupErrorDisplayed(),
@@ -67,10 +72,11 @@ public class TC09 {
         homeYopMailPage = new HomeYopMailPage(webDriver);
         emailPage = new EmailPage(webDriver);
         leftMenu = new LeftMenu(webDriver);
-        accountDetails = new AccountDetails(webDriver);
-        transferDetailsForm = new TransferDetailsForm(webDriver);
-        transferConfirmationForm = new TransferConfirmationForm(webDriver);
-        otpEntryForm = new OTPEntryForm(webDriver);
+        accountsPage = new AccountsPage(webDriver);
+        accountDetails = new AccountDetailsPage(webDriver);
+        transferDetailsPage = new TransferDetailsPage(webDriver);
+        transferConfirmationPage = new TransferConfirmationPage(webDriver);
+        otpEntryPage = new OTPEntryPage(webDriver);
         webDriver.get(Constants.EBANKING_URL);
 
     }
@@ -87,11 +93,13 @@ public class TC09 {
     HomeYopMailPage homeYopMailPage;
     EmailPage emailPage;
     LeftMenu leftMenu;
-    AccountDetails accountDetails;
-    TransferDetailsForm transferDetailsForm;
-    TransferConfirmationForm transferConfirmationForm;
-    OTPEntryForm otpEntryForm;
-    double beforeAvailableBalance;
-    double afterAvailableBalance;
+    AccountsPage accountsPage;
+    AccountDetailsPage accountDetails;
+    TransferDetailsPage transferDetailsPage;
+    TransferConfirmationPage transferConfirmationPage;
+    OTPEntryPage otpEntryPage;
+    int beforeAvailableBalance;
+    int afterAvailableBalance;
     String OTPCode;
+    int sourceAccountId;
 }

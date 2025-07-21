@@ -8,7 +8,7 @@ public class LeftMenu {
     private WebDriver webDriver;
     final private By tranferMenuItemLocator = By.xpath("//*[@class = 'ui-menuitem-text'][text() = 'Chuyển  khoản']");
     final private By interbankTransferMenuItemLocator = By.xpath("//*[@class = 'ui-menuitem-text'][text() = 'Liên Ngân Hàng']");
-    final private By accountDetailMenuItemLocator = By.xpath("//*[@class = 'ui-menuitem-text'][text() = 'Tài khoản']");
+    final private By accountMenuItemLocator = By.xpath("//*[@class = 'ui-menuitem-text'][text() = 'Tài khoản']");
 
 
     public LeftMenu(WebDriver webDriver) {
@@ -25,8 +25,8 @@ public class LeftMenu {
         webDriver.findElement(interbankTransferMenuItemLocator).click();
     }
 
-    @Step("Click on account detail menu item")
-    public void openAccountDetailForm() {
-        webDriver.findElement(accountDetailMenuItemLocator).click();
+    @Step("Click on account menu item")
+    public void openAccountForm() {
+        webDriver.findElement(accountMenuItemLocator).click();
     }
 }

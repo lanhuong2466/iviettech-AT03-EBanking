@@ -17,26 +17,27 @@ public class TC04 {
     public void VerifyErrorPopupIsDisplayedWhenTheDestinationAccountIsInvalid() {
         loginPage.Login(Constants.USERNAME, Constants.PASSWORD);
 
-        leftMenu.openAccountDetailForm();
-        accountDetails.openAccountDetails(100001403);
+        leftMenu.openAccountForm();
+        sourceAccountId = 100001403;
+        accountsPage.openAccountDetailsForm(sourceAccountId);
         beforeAvailableBalance = accountDetails.getAvailableBalance();
 
         leftMenu.openTransferForm();
 
-        transferDetailsForm.enterTransferDetails(100001403,
+        transferDetailsPage.enterTransferDetails(sourceAccountId,
                 100002000,
                 12000,
                 "Huong chuyen khoan 12000 dong");
 
-        transferDetailsForm.openTransferConfirmationForm();
+        transferDetailsPage.openTransferConfirmationForm();
 
         softAssert.assertTrue(homePage.isPopupErrorDisplayed(), "Popup Tài khoản không hợp lệ, quý khách vui lòng kiểm tra lại không hiển thị");
 
-        leftMenu.openAccountDetailForm();
-        accountDetails.openAccountDetails(100001403);
+        leftMenu.openAccountForm();
+        accountsPage.openAccountDetailsForm(sourceAccountId);
         afterAvailableBalance = accountDetails.getAvailableBalance();
 
-        softAssert.assertEquals(beforeAvailableBalance,afterAvailableBalance,
+        softAssert.assertEquals(beforeAvailableBalance, afterAvailableBalance,
                 "Số dư khả dụng không đúng sau khi chuyển tiền đến tài khoản không hợp lệ");
 
         softAssert.assertAll();
@@ -46,20 +47,20 @@ public class TC04 {
     public void VerifyErrorPopupIsDisplayedWhenTheDestinationAccountIsNotEntered() {
         loginPage.Login(Constants.USERNAME, Constants.PASSWORD);
 
-        leftMenu.openAccountDetailForm();
-        accountDetails.openAccountDetails(100001403);
+        leftMenu.openAccountForm();
+        accountsPage.openAccountDetailsForm(sourceAccountId);
         beforeAvailableBalance = accountDetails.getAvailableBalance();
-        
+
         leftMenu.openTransferForm();
-        transferDetailsForm.selectSourceAccount(100001403);
-        transferDetailsForm.enterAmount(12000);
-        transferDetailsForm.enterPaymentContent("Huong chuyen khoan 12000 dong");
-        transferDetailsForm.openTransferConfirmationForm();
+        transferDetailsPage.selectSourceAccount(100001403);
+        transferDetailsPage.enterAmount(12000);
+        transferDetailsPage.enterPaymentContent("Huong chuyen khoan 12000 dong");
+        transferDetailsPage.openTransferConfirmationForm();
 
         softAssert.assertTrue(homePage.isPopupErrorDisplayed(), "Popup Tài khoản không hợp lệ, quý khách vui lòng kiểm tra lại không hiển thị");
 
-        leftMenu.openAccountDetailForm();
-        accountDetails.openAccountDetails(100001403);
+        leftMenu.openAccountForm();
+        accountsPage.openAccountDetailsForm(sourceAccountId);
         afterAvailableBalance = accountDetails.getAvailableBalance();
 
         softAssert.assertEquals(beforeAvailableBalance, afterAvailableBalance,
@@ -81,8 +82,9 @@ public class TC04 {
         homeYopMailPage = new HomeYopMailPage(webDriver);
         emailPage = new EmailPage(webDriver);
         leftMenu = new LeftMenu(webDriver);
-        accountDetails = new AccountDetails(webDriver);
-        transferDetailsForm = new TransferDetailsForm(webDriver);
+        accountsPage = new AccountsPage(webDriver);
+        accountDetails = new AccountDetailsPage(webDriver);
+        transferDetailsPage = new TransferDetailsPage(webDriver);
         webDriver.get(Constants.EBANKING_URL);
 
     }
@@ -99,9 +101,11 @@ public class TC04 {
     HomeYopMailPage homeYopMailPage;
     EmailPage emailPage;
     LeftMenu leftMenu;
-    AccountDetails accountDetails;
-    TransferDetailsForm transferDetailsForm;
-    double beforeAvailableBalance;
-    double afterAvailableBalance;
+    AccountsPage accountsPage;
+    AccountDetailsPage accountDetails;
+    TransferDetailsPage transferDetailsPage;
+    int beforeAvailableBalance;
+    int afterAvailableBalance;
+    int sourceAccountId;
 
 }
