@@ -61,7 +61,7 @@ public class TC06 {
         homeYopMailPage = new HomeYopMailPage(webDriver);
         emailPage = new EmailPage(webDriver);
         leftMenu = new LeftMenu(webDriver);
-//        accountsForm = new AccountsForm(webDriver);
+        accountsPage = new AccountsPage(webDriver);
         accountDetails = new AccountDetailsPage(webDriver);
         transferDetailsPage = new TransferDetailsPage(webDriver);
         webDriver.get(Constants.EBANKING_URL);

@@ -9,36 +9,52 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import pages.EBanking.*;
-import pages.Yopmail.EmailPage;
-import pages.Yopmail.HomeYopMailPage;
 import utils.Constants;
 
 import java.time.Duration;
 
 public class TC09 {
 
+    WebDriver webDriver;
+    SoftAssert softAssert;
+    LoginPage loginPage;
+    HomePage homePage;
+    LeftMenu leftMenu;
+    AccountsPage accountsPage;
+    AccountDetailsPage accountDetails;
+    TransferDetailsPage transferDetailsPage;
+    TransferConfirmationPage transferConfirmationPage;
+    OTPEntryPage otpEntryPage;
+
+    int beforeAvailableBalance;
+    String OTPCode;
+    int sourceAccountId;
 
     @Test(description = "Verify error message is displayed when entering incorrect OTP during fund transfer")
-    public void VerifyErrorMessageIsDisplayedWhenEnteringIncorrectOTP() {
+    public void verifyErrorMessageIsDisplayedWhenEnteringIncorrectOTP() {
 
-        // Login
+        // Initialize SoftAssert
+        softAssert = new SoftAssert();
+
+        // Login to user account
         loginPage.Login(Constants.USERNAME, Constants.PASSWORD);
 
+        // Navigate to account and get available balance
         leftMenu.openAccountForm();
         sourceAccountId = 100001403;
         accountsPage.openAccountDetailsForm(sourceAccountId);
         beforeAvailableBalance = accountDetails.getAvailableBalance();
 
-        // Open transfer form and enter transfer details
+        // Open transfer form and input transfer details
         leftMenu.openTransferForm();
         transferDetailsPage.enterTransferDetails(
                 sourceAccountId,   // Source account
-                100001399,   // Destination account
-                12000,       // Amount
+                100001399,         // Destination account
+                12,                // Amount
                 "Test chuyen khoan voi OTP sai"
         );
 
-        // Open transaction confirmation and OTP entry form
+        // Proceed to transfer confirmation and OTP entry form
         transferDetailsPage.openTransferConfirmationForm();
         transferConfirmationPage.openOTPEntryForm();
 
@@ -49,36 +65,33 @@ public class TC09 {
         otpEntryPage.enterOTPCode(OTPCode);
 
         // Click transfer button WITHOUT waiting for success popup
-        otpEntryPage.clickTransferButton();
+        otpEntryPage.clickTransferButtonWithoutWaitingSuccessPopup();
 
-        // Verify error popup displayed for invalid OTP
-        softAssert.assertTrue(homePage.isPopupErrorDisplayed(),
-                "Khong hien popup OTP khong dung");
+        // Verify error popup displayed for invalid OTP with correct message
+        softAssert.assertTrue(otpEntryPage.isInvalidOTPPopupDisplayed(),
+                "Popup error khong hien thi khi nhap sai OTP");
 
-        // Report all asserts
+        // Report all assertions
         softAssert.assertAll();
     }
 
     @BeforeMethod
     public void setUp() {
-
         ChromeOptions options = new ChromeOptions();
         webDriver = new ChromeDriver(options);
         webDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         webDriver.manage().window().maximize();
-        softAssert = new SoftAssert();
+
         loginPage = new LoginPage(webDriver);
         homePage = new HomePage(webDriver);
-        homeYopMailPage = new HomeYopMailPage(webDriver);
-        emailPage = new EmailPage(webDriver);
         leftMenu = new LeftMenu(webDriver);
         accountsPage = new AccountsPage(webDriver);
         accountDetails = new AccountDetailsPage(webDriver);
         transferDetailsPage = new TransferDetailsPage(webDriver);
         transferConfirmationPage = new TransferConfirmationPage(webDriver);
         otpEntryPage = new OTPEntryPage(webDriver);
-        webDriver.get(Constants.EBANKING_URL);
 
+        webDriver.get(Constants.EBANKING_URL);
     }
 
     @AfterMethod
@@ -86,20 +99,4 @@ public class TC09 {
         webDriver.quit();
     }
 
-    WebDriver webDriver;
-    SoftAssert softAssert;
-    LoginPage loginPage;
-    HomePage homePage;
-    HomeYopMailPage homeYopMailPage;
-    EmailPage emailPage;
-    LeftMenu leftMenu;
-    AccountsPage accountsPage;
-    AccountDetailsPage accountDetails;
-    TransferDetailsPage transferDetailsPage;
-    TransferConfirmationPage transferConfirmationPage;
-    OTPEntryPage otpEntryPage;
-    int beforeAvailableBalance;
-    int afterAvailableBalance;
-    String OTPCode;
-    int sourceAccountId;
 }
