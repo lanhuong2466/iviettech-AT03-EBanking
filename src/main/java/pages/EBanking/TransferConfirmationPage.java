@@ -59,7 +59,7 @@ public class TransferConfirmationPage {
     }
 
     @Step("Get value from table by label")
-    public String getValueFromTable(String label) {
+    private String getValueFromTable(String label) {
         List<String> cells = webDriver.findElements(By.xpath("//table//tr/td[1]/label"))
                 .stream().map(e -> e.getText().trim()).collect(Collectors.toList());
 

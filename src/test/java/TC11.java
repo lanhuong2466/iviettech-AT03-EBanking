@@ -1,3 +1,4 @@
+import io.qameta.allure.Issue;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -14,6 +15,7 @@ import java.time.Duration;
 
 public class TC11 {
 
+    @Issue("Bug03")
     @Test(description = "Verify error message is displayed when non-numeric value is entered as transfer amount")
     public void VerifyErrorMessageIsDisplayedWHenNonNumericValueIsEnteredAsTransferAmount() {
 

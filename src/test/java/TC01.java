@@ -23,8 +23,9 @@ public class TC01 {
 
         adminHomePage.openDepositMoneyForm();
 
-        adminHomePage.depositMoneyIntoABankAccount(100001403,
-                1000000, "Nap tien vao tai khoan 100001399");
+
+        adminHomePage.depositMoneyIntoABankAccount(sourceAccountId,
+                1_000_000, "Nap tien vao tai khoan " + sourceAccountId);
 
 
         webDriver.get(Constants.EBANKING_URL);
@@ -33,13 +34,13 @@ public class TC01 {
 
         leftMenu.openAccountForm();
 
-        sourceAccountId = 100001403;
+
         accountsPage.openAccountDetailsForm(sourceAccountId);
         beforeAvailableBalance = accountDetailsPage.getAvailableBalance();
 
         leftMenu.openTransferForm();
 
-        amount = RandomUtils.nextInt(0, beforeAvailableBalance - 1100);
+        amount = RandomUtils.nextInt(1, beforeAvailableBalance - 1100);
         transferDetailsPage.enterTransferDetails(sourceAccountId,
                 100001399, amount,
                 "Huong chuyen tien");
@@ -136,6 +137,7 @@ public class TC01 {
         transferConfirmationPage = new TransferConfirmationPage(webDriver);
         otpEntryPage = new OTPEntryPage(webDriver);
         webDriver.get(Constants.ADMIN_EBANKING_URL);
+        sourceAccountId = 100001403;
 
     }
 

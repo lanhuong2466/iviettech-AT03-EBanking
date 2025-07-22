@@ -2,7 +2,6 @@ package pages.EBanking;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 
 public class TransferDetailsPage {
@@ -20,24 +19,22 @@ public class TransferDetailsPage {
 
     @Step("Get transfer message from transfer details form")
     public String getTransferMessage() {
-        return (String) ((JavascriptExecutor) webDriver).executeScript(
-                "return arguments[0].value;", webDriver.findElement(transferMessageTextboxLocator));
+        return webDriver.findElement(transferMessageTextboxLocator).getAttribute("value");
     }
 
     @Step("Get transfer amount from transfer details form")
     public int getTransferAmount() {
-        String amountValue = (String) ((JavascriptExecutor) webDriver)
-                .executeScript("return arguments[0].value;", webDriver.findElement(amountTextboxLocator));
+        String amountValue = webDriver.findElement(amountTextboxLocator).getAttribute("value");
 
         amountValue = amountValue.replaceAll("[^\\d]", "");  // chỉ giữ lại số
 
         return Integer.parseInt(amountValue);
     }
 
+    //xy ve sua may cai con lai
     @Step("Get recipient account ID from transfer details form")
     public int getRecipientAccountId() {
-        String recipientId = (String) ((JavascriptExecutor) webDriver)
-                .executeScript("return arguments[0].value;", webDriver.findElement(recipientAccountTextboxLocator));
+        String recipientId = webDriver.findElement(recipientAccountTextboxLocator).getAttribute("value");
 
         return Integer.parseInt(recipientId);
     }

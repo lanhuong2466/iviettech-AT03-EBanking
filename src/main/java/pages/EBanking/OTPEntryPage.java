@@ -10,8 +10,8 @@ import java.time.Duration;
 
 public class OTPEntryPage {
     private WebDriver webDriver;
-    final private By OTPTextboxLocator = By.name("j_idt23:j_idt46");
-    final private By transferButtonLocator = By.name("j_idt23:j_idt48");
+    final private By OTPTextboxLocator = By.xpath("//input[@type = 'text']");
+    final private By transferButtonLocator = By.xpath("//input[@type = 'submit']");
     final private By popupTransferSuccessLocator = By.xpath(
             "//*[@id = 'primefacesmessagedlg']//div[text() = 'Chuyển tiền thành công']");
 

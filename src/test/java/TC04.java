@@ -1,3 +1,4 @@
+import io.qameta.allure.Issue;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -13,6 +14,8 @@ import utils.Constants;
 import java.time.Duration;
 
 public class TC04 {
+
+    @Issue("Bug01")
     @Test(description = "Verify error message is displayed when the destination account does not exist")
     public void VerifyErrorPopupIsDisplayedWhenTheDestinationAccountIsInvalid() {
         loginPage.Login(Constants.USERNAME, Constants.PASSWORD);
