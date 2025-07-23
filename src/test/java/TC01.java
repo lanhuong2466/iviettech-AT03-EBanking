@@ -100,10 +100,12 @@ public class TC01 {
 
         otpEntryPage.submitOTPCode(OTPCode);
 
-        softAssert.assertTrue(otpEntryPage.isTransferSuccessPopupDisplayed(),
-                "Khong hien popup chuyen khoan thanh cong");
+        softAssert.assertTrue(otpEntryPage.isTransferSuccessDialogDisplayed(),
+                "Khong hien dialog thong bao");
+        softAssert.assertEquals(homePage.getSuccessTransferDialogText(),
+                "Chuyển tiền thành công", "Nội dung thông báo không đúng");
 
-        homePage.closeTheNotificationPopup();
+        homePage.closeTheNotificationDialog();
 
         leftMenu.openAccountForm();
         accountsPage.openAccountDetailsPage(sourceAccountId);

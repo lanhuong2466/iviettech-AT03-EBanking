@@ -14,7 +14,7 @@ public class OTPEntryPage {
     // Locators
     final private By OTPTextboxLocator = By.xpath("//input[@type = 'text']");
     final private By transferButtonLocator = By.xpath("//input[@type = 'submit']");
-    final private By popupTransferSuccessLocator = By.xpath(
+    final private By transferSuccessDialogLocator = By.xpath(
             "//*[@id = 'primefacesmessagedlg']//div[text() = 'Chuyển tiền thành công']");
     final private By popupOTPInvalidLocator = By.xpath("//span[@class='ui-growl-title' and text()='Sai mã OTP']");
 
@@ -31,7 +31,7 @@ public class OTPEntryPage {
     public void clickTransferButton() {
         webDriver.findElement(transferButtonLocator).click();
         WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(popupTransferSuccessLocator));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(transferSuccessDialogLocator));
     }
 
     @Step("Click transfer button without waiting for success popup")
@@ -40,10 +40,10 @@ public class OTPEntryPage {
     }
 
     @Step("Verify transfer success popup is displayed")
-    public boolean isTransferSuccessPopupDisplayed() {
+    public boolean isTransferSuccessDialogDisplayed() {
         WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(5));
         try {
-            wait.until(driver -> driver.findElement(popupTransferSuccessLocator).isDisplayed());
+            wait.until(driver -> driver.findElement(transferSuccessDialogLocator).isDisplayed());
             return true;
         } catch (Exception e) {
             return false;
@@ -66,6 +66,6 @@ public class OTPEntryPage {
         enterOTPCode(otp);
         webDriver.findElement(transferButtonLocator).click();
         WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(popupTransferSuccessLocator));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(transferSuccessDialogLocator));
     }
 }

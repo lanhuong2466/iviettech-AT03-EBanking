@@ -12,12 +12,18 @@ public class HomePage {
     private WebDriver webDriver;
     final private By availableBalanceLocator = By.id("j_idt23:amount");
     final private By popupErrorLocator = By.xpath("//span[@class = 'ui-growl-title']");
-    final private By popupCloseButtonLocator = By.xpath("//*[@id = 'primefacesmessagedlg']//a");
-
+    final private By closeButtonDialogLocator = By.xpath("//*[@id = 'primefacesmessagedlg']//a");
+    final private By successTransferDialogLocator = By.xpath(
+            "//*[@id = 'primefacesmessagedlg']//div[text()= 'Chuyển tiền thành công']");
 
     @Step("Click close button of the notification popup ")
-    public void closeTheNotificationPopup() {
-        webDriver.findElement(popupCloseButtonLocator).click();
+    public void closeTheNotificationDialog() {
+        webDriver.findElement(closeButtonDialogLocator).click();
+    }
+
+    @Step("Get text from success transfer dialog")
+    public String getSuccessTransferDialogText() {
+        return webDriver.findElement(successTransferDialogLocator).getText();
     }
 
     @Step("Get text from negative amount popup")
