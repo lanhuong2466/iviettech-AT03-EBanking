@@ -1,4 +1,3 @@
-import io.qameta.allure.Issue;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -15,14 +14,24 @@ import java.time.Duration;
 
 public class TC04 {
 
-    @Issue("Bug01")
+
     @Test(description = "Verify error message is displayed when the destination account does not exist")
     public void VerifyErrorPopupIsDisplayedWhenTheDestinationAccountIsInvalid() {
+        loginAdminPage.loginAdminAccount(Constants.ADMIN_USERNAME, Constants.ADMIN_PASSWORD);
+
+        adminHomePage.openDepositMoneyForm();
+
+
+        adminHomePage.depositMoneyIntoABankAccount(sourceAccountId,
+                1_000_000, "Nap tien vao tai khoan " + sourceAccountId);
+
+
+        webDriver.get(Constants.EBANKING_URL);
         loginPage.Login(Constants.USERNAME, Constants.PASSWORD);
 
         leftMenu.openAccountForm();
-        sourceAccountId = 100001403;
-        accountsPage.openAccountDetailsForm(sourceAccountId);
+
+        accountsPage.openAccountDetailsPage(sourceAccountId);
         beforeAvailableBalance = accountDetails.getAvailableBalance();
 
         leftMenu.openTransferForm();
@@ -37,7 +46,7 @@ public class TC04 {
         softAssert.assertTrue(homePage.isPopupErrorDisplayed(), "Popup Tài khoản không hợp lệ, quý khách vui lòng kiểm tra lại không hiển thị");
 
         leftMenu.openAccountForm();
-        accountsPage.openAccountDetailsForm(sourceAccountId);
+        accountsPage.openAccountDetailsPage(sourceAccountId);
         afterAvailableBalance = accountDetails.getAvailableBalance();
 
         softAssert.assertEquals(beforeAvailableBalance, afterAvailableBalance,
@@ -48,10 +57,20 @@ public class TC04 {
 
     @Test(description = "Verify error message is displayed when the destination account is not entered")
     public void VerifyErrorPopupIsDisplayedWhenTheDestinationAccountIsNotEntered() {
+        loginAdminPage.loginAdminAccount(Constants.ADMIN_USERNAME, Constants.ADMIN_PASSWORD);
+
+        adminHomePage.openDepositMoneyForm();
+
+
+        adminHomePage.depositMoneyIntoABankAccount(sourceAccountId,
+                1_000_000, "Nap tien vao tai khoan " + sourceAccountId);
+
+
+        webDriver.get(Constants.EBANKING_URL);
         loginPage.Login(Constants.USERNAME, Constants.PASSWORD);
 
         leftMenu.openAccountForm();
-        accountsPage.openAccountDetailsForm(sourceAccountId);
+        accountsPage.openAccountDetailsPage(sourceAccountId);
         beforeAvailableBalance = accountDetails.getAvailableBalance();
 
         leftMenu.openTransferForm();
@@ -63,7 +82,7 @@ public class TC04 {
         softAssert.assertTrue(homePage.isPopupErrorDisplayed(), "Popup Tài khoản không hợp lệ, quý khách vui lòng kiểm tra lại không hiển thị");
 
         leftMenu.openAccountForm();
-        accountsPage.openAccountDetailsForm(sourceAccountId);
+        accountsPage.openAccountDetailsPage(sourceAccountId);
         afterAvailableBalance = accountDetails.getAvailableBalance();
 
         softAssert.assertEquals(beforeAvailableBalance, afterAvailableBalance,
@@ -81,6 +100,8 @@ public class TC04 {
         webDriver.manage().window().maximize();
         softAssert = new SoftAssert();
         loginPage = new LoginPage(webDriver);
+        loginAdminPage = new LoginAdminPage(webDriver);
+        adminHomePage = new AdminHomePage(webDriver);
         homePage = new HomePage(webDriver);
         homeYopMailPage = new HomeYopMailPage(webDriver);
         emailPage = new EmailPage(webDriver);
@@ -88,7 +109,8 @@ public class TC04 {
         accountsPage = new AccountsPage(webDriver);
         accountDetails = new AccountDetailsPage(webDriver);
         transferDetailsPage = new TransferDetailsPage(webDriver);
-        webDriver.get(Constants.EBANKING_URL);
+        webDriver.get(Constants.ADMIN_EBANKING_URL);
+        sourceAccountId = 100001403;
 
     }
 
@@ -100,6 +122,8 @@ public class TC04 {
     WebDriver webDriver;
     SoftAssert softAssert;
     LoginPage loginPage;
+    LoginAdminPage loginAdminPage;
+    AdminHomePage adminHomePage;
     HomePage homePage;
     HomeYopMailPage homeYopMailPage;
     EmailPage emailPage;

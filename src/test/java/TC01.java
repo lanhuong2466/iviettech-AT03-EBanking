@@ -35,7 +35,7 @@ public class TC01 {
         leftMenu.openAccountForm();
 
 
-        accountsPage.openAccountDetailsForm(sourceAccountId);
+        accountsPage.openAccountDetailsPage(sourceAccountId);
         beforeAvailableBalance = accountDetailsPage.getAvailableBalance();
 
         leftMenu.openTransferForm();
@@ -106,7 +106,7 @@ public class TC01 {
         homePage.closeTheNotificationPopup();
 
         leftMenu.openAccountForm();
-        accountsPage.openAccountDetailsForm(sourceAccountId);
+        accountsPage.openAccountDetailsPage(sourceAccountId);
         afterAvailableBalance = accountDetailsPage.getAvailableBalance();
 
 

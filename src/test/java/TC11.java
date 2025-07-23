@@ -18,12 +18,22 @@ public class TC11 {
     @Issue("Bug03")
     @Test(description = "Verify error message is displayed when non-numeric value is entered as transfer amount")
     public void VerifyErrorMessageIsDisplayedWHenNonNumericValueIsEnteredAsTransferAmount() {
+        loginAdminPage.loginAdminAccount(Constants.ADMIN_USERNAME, Constants.ADMIN_PASSWORD);
+
+        adminHomePage.openDepositMoneyForm();
+
+
+        adminHomePage.depositMoneyIntoABankAccount(sourceAccountId,
+                1_000_000, "Nap tien vao tai khoan " + sourceAccountId);
+
+
+        webDriver.get(Constants.EBANKING_URL);
 
         loginPage.Login(Constants.USERNAME, Constants.PASSWORD);
 
         leftMenu.openAccountForm();
         sourceAccountId = 100001403;
-        accountsPage.openAccountDetailsForm(sourceAccountId);
+        accountsPage.openAccountDetailsPage(sourceAccountId);
         beforeAvailableBalance = accountDetails.getAvailableBalance();
 
         leftMenu.openTransferForm();
@@ -40,7 +50,7 @@ public class TC11 {
                 "Nội dung thông báo không đúng");
 
         leftMenu.openAccountForm();
-        accountsPage.openAccountDetailsForm(sourceAccountId);
+        accountsPage.openAccountDetailsPage(sourceAccountId);
 
         afterAvailableBalance = accountDetails.getAvailableBalance();
 
@@ -58,6 +68,8 @@ public class TC11 {
         webDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         webDriver.manage().window().maximize();
         softAssert = new SoftAssert();
+        loginAdminPage = new LoginAdminPage(webDriver);
+        adminHomePage = new AdminHomePage(webDriver);
         loginPage = new LoginPage(webDriver);
         homePage = new HomePage(webDriver);
         homeYopMailPage = new HomeYopMailPage(webDriver);
@@ -67,7 +79,8 @@ public class TC11 {
         accountDetails = new AccountDetailsPage(webDriver);
         transferDetailsPage = new TransferDetailsPage(webDriver);
         transferConfirmationPage = new TransferConfirmationPage(webDriver);
-        webDriver.get(Constants.EBANKING_URL);
+        webDriver.get(Constants.ADMIN_EBANKING_URL);
+        sourceAccountId = 100001403;
 
     }
 
@@ -78,6 +91,8 @@ public class TC11 {
 
     WebDriver webDriver;
     SoftAssert softAssert;
+    LoginAdminPage loginAdminPage;
+    AdminHomePage adminHomePage;
     LoginPage loginPage;
     HomePage homePage;
     HomeYopMailPage homeYopMailPage;
