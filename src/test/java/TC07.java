@@ -14,7 +14,7 @@ import java.time.Duration;
 
 public class TC07 {
 
-    @Test
+    @Test(description = "No Input Content")
     public void VerifyErrorMessageIsDisplayedWhenTransferringWithNoContent() {
         loginPage.Login(Constants.USERNAME, Constants.PASSWORD);
 

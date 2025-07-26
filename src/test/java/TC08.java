@@ -17,7 +17,7 @@ import java.time.Duration;
 
 public class TC08 {
 
-    @Test
+    @Test(description = "Verify transfer > 100 character contentr")
     public void VerifyErrorMessageIsDisplayedWhenTransferringWithContentOver100Chars() {
 
         // Login
