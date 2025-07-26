@@ -20,7 +20,7 @@ public class TC07 {
 
         leftMenu.openAccountForm();
         sourceAccountId = 100001403;
-        accountsPage.openAccountDetailsForm(sourceAccountId);
+        accountsPage.openAccountDetailsPage(sourceAccountId);
         beforeAvailableBalance = accountDetails.getAvailableBalance();
 
         leftMenu.openTransferForm();
@@ -36,7 +36,7 @@ public class TC07 {
         softAssert.assertEquals(homePage.getpopupErrorText(), "Nhập nội dung", "Nội dung thông báo không đúng");
 
         leftMenu.openAccountForm();
-        accountsPage.openAccountDetailsForm(sourceAccountId);
+        accountsPage.openAccountDetailsPage(sourceAccountId);
         afterAvailableBalance = accountDetails.getAvailableBalance();
 
         softAssert.assertEquals(beforeAvailableBalance,

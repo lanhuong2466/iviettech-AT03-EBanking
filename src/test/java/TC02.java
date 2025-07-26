@@ -32,8 +32,8 @@ public class TC02 {
 
         // 2. Get available balance before transfer
         leftMenu.openAccountForm();
-        accountDetails.openAccountDetails(sourceAccountId);
-        beforeAvailableBalance = accountDetails.getAvailableBalance();
+        accountsPage.openAccountDetailsPage(sourceAccountId);
+        beforeAvailableBalance = accountDetailsPage.getAvailableBalance();
 
         // 3. Open interbank transfer form and input details
         leftMenu.openInterbankTransferForm();
@@ -100,16 +100,16 @@ public class TC02 {
 
         // 8. Verify transfer success popup
         softAssert.assertTrue(
-                otpEntryPage.isTransferSuccessPopupDisplayed(),
+                otpEntryPage.isTransferSuccessDialogDisplayed(),
                 "Transfer success popup not displayed"
         );
 
-        homePage.closeTheNotificationPopup();
+        homePage.closeTheNotificationDialog();
 
         // 9. Verify available balance after transfer (assume fee = 3300)
         leftMenu.openAccountForm();
-        accountDetails.openAccountDetails(sourceAccountId);
-        afterAvailableBalance = accountDetails.getAvailableBalance();
+        accountsPage.openAccountDetailsPage(sourceAccountId);
+        afterAvailableBalance = accountDetailsPage.getAvailableBalance();
 
         softAssert.assertEquals(
                 afterAvailableBalance,
@@ -136,7 +136,8 @@ public class TC02 {
         homeYopMailPage = new HomeYopMailPage(webDriver);
         emailPage = new EmailPage(webDriver);
         leftMenu = new LeftMenu(webDriver);
-        accountDetails = new AccountDetails(webDriver);
+        accountsPage = new AccountsPage(webDriver);
+        accountDetailsPage = new AccountDetailsPage(webDriver);
         interbankTransferDetailsForm = new InterbankTransferDetailsForm(webDriver);
         interbankTransferConfirmationForm = new InterbankTransferConfirmationForm(webDriver);
         otpEntryPage = new OTPEntryPage(webDriver);
@@ -161,7 +162,8 @@ public class TC02 {
     HomeYopMailPage homeYopMailPage;
     EmailPage emailPage;
     LeftMenu leftMenu;
-    AccountDetails accountDetails;
+    AccountsPage accountsPage;
+    AccountDetailsPage accountDetailsPage;
     InterbankTransferDetailsForm interbankTransferDetailsForm;
     InterbankTransferConfirmationForm interbankTransferConfirmationForm;
     OTPEntryPage otpEntryPage;

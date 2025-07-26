@@ -42,7 +42,7 @@ public class TC09 {
         // Navigate to account and get available balance
         leftMenu.openAccountForm();
         sourceAccountId = 100001403;
-        accountsPage.openAccountDetailsForm(sourceAccountId);
+        accountsPage.openAccountDetailsPage(sourceAccountId);
         beforeAvailableBalance = accountDetails.getAvailableBalance();
 
         // Open transfer form and input transfer details

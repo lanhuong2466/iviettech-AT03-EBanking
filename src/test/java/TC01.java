@@ -12,6 +12,7 @@ import pages.Yopmail.HomeYopMailPage;
 import utils.Constants;
 import utils.WindowSwitcher;
 
+import java.text.Normalizer;
 import java.time.Duration;
 
 public class TC01 {
@@ -102,8 +103,9 @@ public class TC01 {
 
         softAssert.assertTrue(otpEntryPage.isTransferSuccessDialogDisplayed(),
                 "Khong hien dialog thong bao");
-        softAssert.assertEquals(homePage.getSuccessTransferDialogText(),
-                "Chuyển tiền thành công", "Nội dung thông báo không đúng");
+
+        softAssert.assertEquals(Normalizer.normalize(homePage.getSuccessTransferDialogText(), Normalizer.Form.NFC),
+                Normalizer.normalize(successTransferMessage, Normalizer.Form.NFC), "Nội dung thông báo không đúng");
 
         homePage.closeTheNotificationDialog();
 
@@ -162,6 +164,7 @@ public class TC01 {
     TransferDetailsPage transferDetailsPage;
     TransferConfirmationPage transferConfirmationPage;
     OTPEntryPage otpEntryPage;
+
     int beforeAvailableBalance;
     int afterAvailableBalance;
     String originalWindow;
@@ -173,6 +176,7 @@ public class TC01 {
     int recipientAccountId;
     String recipientName;
     double epsilon = 0.0001;
+    String successTransferMessage = "Chuyển tiền thành công";
 
 
     //((JavaScriptExecutor) webDriver).executeScript("return arguments[0].value"));

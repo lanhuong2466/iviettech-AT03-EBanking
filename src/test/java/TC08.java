@@ -29,7 +29,7 @@ public class TC08 {
         // Get available balance before transfer
         leftMenu.openAccountForm();
         sourceAccountId = 100001403; // Use a specific account ID for testing
-        accountsPage.openAccountDetailsForm(sourceAccountId);
+        accountsPage.openAccountDetailsPage(sourceAccountId);
         beforeAvailableBalance = accountDetails.getAvailableBalance();
 
         // Open transfer form and enter transfer details with long content
@@ -56,7 +56,7 @@ public class TC08 {
 
         // Verify available balance is unchanged
         leftMenu.openAccountForm();
-        accountsPage.openAccountDetailsForm(sourceAccountId);
+        accountsPage.openAccountDetailsPage(sourceAccountId);
         afterAvailableBalance = accountDetails.getAvailableBalance();
 
         softAssert.assertEquals(beforeAvailableBalance,

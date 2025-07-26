@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding = "UTF-8"  ?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="EBanking Demo" parallel="classes" thread-count="3">
+    <test name="Verify successful transfer between two accounts within the same bank">
+        <classes>
+            <class name="TC01"/>
+        </classes>
+    </test>
+
+    <test name="Verify error message is displayed when source account is not selected">
+        <classes>
+            <class name="TC03"/>
+        </classes>
+    </test>
+
+    <test name="Verify error message is displayed when the destination account does not exist / is not entered">
+        <classes>
+            <class name="TC04"/>
+        </classes>
+    </test>
+
+    <test name="Verify error message is displayed when transferring a negative amount">
+        <classes>
+            <class name="TC05"/>
+        </classes>
+    </test>
+
+    <test name="Verify error message is displayed when the source account has insufficient funds / transfer amount exceeds available balance">
+        <classes>
+            <class name="TC06"/>
+        </classes>
+    </test>
+
+    <test name="Verify error message is displayed when payment description is not entered">
+        <classes>
+            <class name="TC07"/>
+        </classes>
+    </test>
+
+    <test name="Verify error message is displayed when non-numeric value is entered as transfer amount">
+        <classes>
+            <class name="TC11"/>
+        </classes>
+    </test>
+
+</suite>
