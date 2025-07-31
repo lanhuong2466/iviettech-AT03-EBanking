@@ -1,5 +1,3 @@
-package tests;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -168,13 +166,13 @@ public class TC02 {
     InterbankTransferConfirmationForm interbankTransferConfirmationForm;
     OTPEntryPage otpEntryPage;
 
-    double beforeAvailableBalance;
-    double afterAvailableBalance;
+    int beforeAvailableBalance;
+    int afterAvailableBalance;
     String originalWindow;
     String OTPCode;
 
     final int amount = 996700;
-    final String recipientAccountNumber = "10001111";
+    final int recipientAccountNumber = 10001111;
     final String recipientName = "Nguyen Van A";
     final String bankName = "Ngân hàng Đông Á";
     final String branchName = "Chi nhánh Đà Nẵng";

@@ -24,14 +24,6 @@ public class InterbankTransferDetailsForm {
     private final By transferMessageTextboxLocator = By.id("j_idt23:j_idt45");
     private final By confirmButtonLocator = By.name("j_idt23:j_idt48");
 
-    // Cached data
-    private int cachedSourceAccountId;
-    private String cachedRecipientAccountId;
-    private String cachedRecipientName;
-    private String cachedBankName;
-    private String cachedBranchName;
-    private String cachedTransferMessage;
-    private double cachedAmount;
 
     public InterbankTransferDetailsForm(WebDriver webDriver) {
         this.webDriver = webDriver;
@@ -50,7 +42,6 @@ public class InterbankTransferDetailsForm {
         wait.until(ExpectedConditions.visibilityOfElementLocated(option));
         wait.until(ExpectedConditions.elementToBeClickable(option)).click();
 
-        cachedSourceAccountId = accountId;
     }
 
     @Step("Select bank: {bankName}")
@@ -58,7 +49,6 @@ public class InterbankTransferDetailsForm {
         waitAndClick(bankComboboxLocator);
         By option = By.xpath(String.format("//li[normalize-space()='%s']", bankName));
         wait.until(ExpectedConditions.visibilityOfElementLocated(option)).click();
-        cachedBankName = bankName;
     }
 
     @Step("Select branch: {branchName}")
@@ -73,31 +63,26 @@ public class InterbankTransferDetailsForm {
         waitAndClick(branchComboboxLocator);
         By option = By.xpath(String.format("//li[@data-label='%s']", branchName));
         wait.until(ExpectedConditions.visibilityOfElementLocated(option)).click();
-        cachedBranchName = branchName;
     }
 
-    @Step("Enter recipient account: {recipientAccount}")
-    public void enterRecipientAccount(String recipientAccount) {
-        clearAndType(recipientAccountTextboxLocator, recipientAccount);
-        cachedRecipientAccountId = recipientAccount;
+    @Step("Enter recipient account number: {recipientAccount}")
+    public void enterRecipientAccount(int recipientAccount) {
+       webDriver.findElement(recipientAccountTextboxLocator).sendKeys(String.valueOf(recipientAccount));
     }
 
     @Step("Enter recipient name: {recipientName}")
     public void enterRecipientName(String recipientName) {
-        clearAndType(recipientNameTextboxLocator, recipientName);
-        cachedRecipientName = recipientName;
+        webDriver.findElement(recipientNameTextboxLocator).sendKeys(recipientName);
     }
 
     @Step("Enter transfer amount: {amount}")
-    public void enterAmount(double amount) {
-        clearAndType(transferAmountTextboxLocator, String.valueOf(amount));
-        cachedAmount = amount;
+    public void enterAmount(int amount) {
+        webDriver.findElement(transferAmountTextboxLocator).sendKeys(String.valueOf(amount));
     }
 
     @Step("Enter payment content: {content}")
     public void enterPaymentContent(String content) {
-        clearAndType(transferMessageTextboxLocator, content);
-        cachedTransferMessage = content;
+        webDriver.findElement(transferMessageTextboxLocator).sendKeys(content);
     }
 
     @Step("Click Confirm button to open transaction confirmation form")
@@ -106,9 +91,9 @@ public class InterbankTransferDetailsForm {
     }
 
     @Step("Enter all interbank transfer details in order")
-    public void enterInterbankTransferDetails(int sourceAccountId, String recipientAccountNumber,
+    public void enterInterbankTransferDetails(int sourceAccountId, int recipientAccountNumber,
                                               String recipientName, String bankName, String branchName,
-                                              String transferMessage, double amount) {
+                                              String transferMessage, int amount) {
         selectSourceAccount(sourceAccountId);
         enterRecipientAccount(recipientAccountNumber);
         enterRecipientName(recipientName);
@@ -125,19 +110,4 @@ public class InterbankTransferDetailsForm {
         wait.until(ExpectedConditions.elementToBeClickable(locator)).click();
     }
 
-    private void clearAndType(By locator, String text) {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(locator)).clear();
-        webDriver.findElement(locator).sendKeys(text);
-    }
-
-    // ✅ Getter methods for cached data if needed (commented out)
-    /*
-    public int getCachedSourceAccountId() { return cachedSourceAccountId; }
-    public String getCachedRecipientAccountId() { return cachedRecipientAccountId; }
-    public String getCachedRecipientName() { return cachedRecipientName; }
-    public String getCachedBankName() { return cachedBankName; }
-    public String getCachedBranchName() { return cachedBranchName; }
-    public String getCachedTransferMessage() { return cachedTransferMessage; }
-    public double getCachedAmount() { return cachedAmount; }
-    */
 }
