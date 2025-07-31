@@ -13,24 +13,8 @@ import java.time.Duration;
 
 public class TC09 {
 
-    WebDriver webDriver;
-    SoftAssert softAssert;
-    LoginPage loginPage;
-    HomePage homePage;
-    LeftMenu leftMenu;
-    AccountsPage accountsPage;
-    AccountDetailsPage accountDetails;
-    TransferDetailsPage transferDetailsPage;
-    TransferConfirmationPage transferConfirmationPage;
-    OTPEntryPage otpEntryPage;
-
-    int beforeAvailableBalance;
-    String OTPCode;
-    int sourceAccountId;
-
     @Test(description = "Verify error message is displayed when entering incorrect OTP during fund transfer")
     public void verifyErrorMessageIsDisplayedWhenEnteringIncorrectOTP() {
-
         // Initialize SoftAssert
         softAssert = new SoftAssert();
 
@@ -46,9 +30,9 @@ public class TC09 {
         // Open transfer form and input transfer details
         leftMenu.openTransferForm();
         transferDetailsPage.enterTransferDetails(
-                sourceAccountId,   // Source account
-                100001399,         // Destination account
-                12,                // Amount
+                sourceAccountId,    // Source account
+                100001399,          // Destination account
+                12,                 // Amount
                 "Test chuyen khoan voi OTP sai"
         );
 
@@ -59,17 +43,17 @@ public class TC09 {
         // Generate random invalid OTP (10 alphanumeric characters)
         OTPCode = RandomStringUtils.randomAlphanumeric(10);
 
-        // Enter invalid OTP
+        // Enter invalid OTP and click transfer
         otpEntryPage.enterOTPCode(OTPCode);
-
-        // Click transfer button WITHOUT waiting for success popup
         otpEntryPage.clickTransferButtonWithoutWaitingSuccessPopup();
 
-        // Verify error popup displayed for invalid OTP with correct message
-        softAssert.assertTrue(otpEntryPage.isInvalidOTPPopupDisplayed(),
-                "Popup error khong hien thi khi nhap sai OTP");
+        // Verify error popup is displayed with appropriate message
+        softAssert.assertTrue(
+                otpEntryPage.isInvalidOTPPopupDisplayed(),
+                "Popup error khong hien thi khi nhap sai OTP"
+        );
 
-        // Report all assertions
+        // Assert all results
         softAssert.assertAll();
     }
 
@@ -80,6 +64,7 @@ public class TC09 {
         webDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         webDriver.manage().window().maximize();
 
+        // Initialize page objects
         loginPage = new LoginPage(webDriver);
         homePage = new HomePage(webDriver);
         leftMenu = new LeftMenu(webDriver);
@@ -89,6 +74,7 @@ public class TC09 {
         transferConfirmationPage = new TransferConfirmationPage(webDriver);
         otpEntryPage = new OTPEntryPage(webDriver);
 
+        // Navigate to site
         webDriver.get(Constants.EBANKING_URL);
     }
 
@@ -97,4 +83,21 @@ public class TC09 {
         webDriver.quit();
     }
 
+    // ==== WebDriver & Page Objects ====
+    private WebDriver webDriver;
+    private SoftAssert softAssert;
+
+    private LoginPage loginPage;
+    private HomePage homePage;
+    private LeftMenu leftMenu;
+    private AccountsPage accountsPage;
+    private AccountDetailsPage accountDetails;
+    private TransferDetailsPage transferDetailsPage;
+    private TransferConfirmationPage transferConfirmationPage;
+    private OTPEntryPage otpEntryPage;
+
+    // ==== Test Data ====
+    private int beforeAvailableBalance;
+    private String OTPCode;
+    private int sourceAccountId;
 }

@@ -9,7 +9,6 @@ import pages.EBanking.*;
 import pages.Yopmail.EmailPage;
 import pages.Yopmail.HomeYopMailPage;
 import utils.Constants;
-
 import java.time.Duration;
 
 public class TC10 {

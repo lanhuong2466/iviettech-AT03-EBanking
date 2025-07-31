@@ -10,12 +10,11 @@ import pages.EBanking.*;
 import pages.Yopmail.EmailPage;
 import pages.Yopmail.HomeYopMailPage;
 import utils.Constants;
-
 import java.time.Duration;
 
 public class TC08 {
 
-    @Test(description = "Verify transfer > 100 character contentr")
+    @Test(description = "Verify transfer > 100 character content")
     public void VerifyErrorMessageIsDisplayedWhenTransferringWithContentOver100Chars() {
 
         // Login

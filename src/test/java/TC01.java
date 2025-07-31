@@ -11,7 +11,6 @@ import pages.Yopmail.EmailPage;
 import pages.Yopmail.HomeYopMailPage;
 import utils.Constants;
 import utils.WindowSwitcher;
-
 import java.text.Normalizer;
 import java.time.Duration;
 
